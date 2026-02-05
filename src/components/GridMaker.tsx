@@ -178,8 +178,8 @@ Please regenerate this grid with the requested modifications while keeping the s
       const result = await generateGrid(
         apiKey.key,
         modifiedPrompt,
-        aspectRatio,
-        [gridReference, ...referenceImages] // Grid as first reference
+        [gridReference, ...referenceImages], // Grid as first reference
+        aspectRatio
       );
 
       useKey(apiKey.id);

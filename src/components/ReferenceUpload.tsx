@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { ReferenceImage } from '@/types';
+import { ReferenceImage, ReferenceType } from '@/types';
 import { generateId, cn } from '@/lib/utils';
 import { ImagePlus, X, Images } from 'lucide-react';
 
@@ -14,7 +14,7 @@ interface ReferenceUploadProps {
 export function ReferenceUpload({
   images,
   onChange,
-  maxImages = 20,
+  maxImages = 14, // Gemini 3 Pro limit: 5 humans + 6 objects + 3 style = 14
 }: ReferenceUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -28,11 +28,17 @@ export function ReferenceUpload({
       const remainingSlots = maxImages - images.length;
       const filesToAdd = imageFiles.slice(0, remainingSlots);
 
-      const newImages: ReferenceImage[] = filesToAdd.map((file) => ({
-        id: generateId(),
-        file,
-        preview: URL.createObjectURL(file),
-      }));
+      const newImages: ReferenceImage[] = filesToAdd.map((file) => {
+        // Extract filename without extension for label
+        const filenameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
+        return {
+          id: generateId(),
+          file,
+          preview: URL.createObjectURL(file),
+          referenceType: 'anchor' as ReferenceType, // Default to anchor (style/environment)
+          label: filenameWithoutExt, // Prefill with filename
+        };
+      });
 
       onChange([...images, ...newImages]);
     },
@@ -78,6 +84,57 @@ export function ReferenceUpload({
     [handleFiles]
   );
 
+  // Update reference type for an image
+  const updateImageType = useCallback(
+    (id: string, referenceType: ReferenceType) => {
+      onChange(
+        images.map((img) =>
+          img.id === id ? { ...img, referenceType } : img
+        )
+      );
+    },
+    [images, onChange]
+  );
+
+  // Update label for an image
+  const updateImageLabel = useCallback(
+    (id: string, label: string) => {
+      onChange(
+        images.map((img) =>
+          img.id === id ? { ...img, label: label || undefined } : img
+        )
+      );
+    },
+    [images, onChange]
+  );
+
+  // Get type color for visual indicator
+  const getTypeColor = (type: ReferenceType) => {
+    switch (type) {
+      case 'character':
+        return 'border-blue-500 bg-blue-500/20';
+      case 'anchor':
+        return 'border-purple-500 bg-purple-500/20';
+      case 'object':
+        return 'border-orange-500 bg-orange-500/20';
+      default:
+        return 'border-gray-500';
+    }
+  };
+
+  const getTypeLabel = (type: ReferenceType) => {
+    switch (type) {
+      case 'character':
+        return 'Character (Face Match)';
+      case 'anchor':
+        return 'Style/Environment';
+      case 'object':
+        return 'Object (Design Match)';
+      default:
+        return type;
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -101,27 +158,111 @@ export function ReferenceUpload({
         )}
       </div>
 
-      {/* Image Grid */}
+      {/* Image Grid with Type Selector */}
       {images.length > 0 && (
-        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {images.map((img) => (
             <div
               key={img.id}
-              className="relative aspect-square rounded-lg overflow-hidden group"
+              className={cn(
+                'relative rounded-lg overflow-hidden border-2 transition-all',
+                getTypeColor(img.referenceType)
+              )}
             >
-              <img
-                src={img.preview}
-                alt="Reference"
-                className="w-full h-full object-cover"
-              />
-              <button
-                onClick={() => handleRemove(img.id)}
-                className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <X className="w-3 h-3 text-white" />
-              </button>
+              {/* Image Preview */}
+              <div className="aspect-square relative group">
+                <img
+                  src={img.preview}
+                  alt="Reference"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  onClick={() => handleRemove(img.id)}
+                  className="absolute top-1 right-1 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="w-3 h-3 text-white" />
+                </button>
+                {/* File name overlay */}
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1">
+                  <p className="text-[10px] text-white truncate">
+                    {img.file.name}
+                  </p>
+                </div>
+              </div>
+
+              {/* Type Selector */}
+              <div className="p-2 bg-[var(--card)] space-y-2">
+                {/* Type Buttons */}
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => updateImageType(img.id, 'character')}
+                    className={cn(
+                      'flex-1 text-[10px] py-1 px-1 rounded transition-colors',
+                      img.referenceType === 'character'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-[var(--secondary)] text-[var(--muted-foreground)] hover:bg-blue-500/30'
+                    )}
+                    title="Character - Match face exactly"
+                  >
+                    Character
+                  </button>
+                  <button
+                    onClick={() => updateImageType(img.id, 'anchor')}
+                    className={cn(
+                      'flex-1 text-[10px] py-1 px-1 rounded transition-colors',
+                      img.referenceType === 'anchor'
+                        ? 'bg-purple-500 text-white'
+                        : 'bg-[var(--secondary)] text-[var(--muted-foreground)] hover:bg-purple-500/30'
+                    )}
+                    title="Style/Environment - Match style only"
+                  >
+                    Style-Env
+                  </button>
+                  <button
+                    onClick={() => updateImageType(img.id, 'object')}
+                    className={cn(
+                      'flex-1 text-[10px] py-1 px-1 rounded transition-colors',
+                      img.referenceType === 'object'
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-[var(--secondary)] text-[var(--muted-foreground)] hover:bg-orange-500/30'
+                    )}
+                    title="Object - Match design exactly"
+                  >
+                    Object
+                  </button>
+                </div>
+
+                {/* Label Input (for character or object) */}
+                {(img.referenceType === 'character' || img.referenceType === 'object') && (
+                  <input
+                    type="text"
+                    placeholder={img.referenceType === 'character' ? 'Name (e.g., Aurangzeb)' : 'Object name'}
+                    value={img.label || ''}
+                    onChange={(e) => updateImageLabel(img.id, e.target.value)}
+                    className="w-full px-2 py-1 text-[10px] bg-[var(--secondary)] border border-[var(--border)] rounded text-[var(--foreground)] placeholder-[var(--muted-foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+                  />
+                )}
+              </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Type Legend */}
+      {images.length > 0 && (
+        <div className="flex flex-wrap gap-3 text-[10px] text-[var(--muted-foreground)]">
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+            Character: Face will match exactly
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+            Style-Env: Style reference only (won't copy)
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+            Object: Design will match exactly
+          </span>
         </div>
       )}
 

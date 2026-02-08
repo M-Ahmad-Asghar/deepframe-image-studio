@@ -18,10 +18,14 @@ export interface GeneratedImage {
   imageSize?: ImageSize;
 }
 
+export type ReferenceType = 'character' | 'anchor' | 'object';
+
 export interface ReferenceImage {
   id: string;
   file: File;
   preview: string;
+  referenceType: ReferenceType;
+  label?: string; // Optional name like "Aurangzeb" or "Sandook"
 }
 
 export type AspectRatio = '1:1' | '16:9' | '9:16' | '4:3' | '3:4' | 'free';

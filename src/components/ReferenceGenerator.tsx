@@ -130,12 +130,21 @@ export default function ReferenceGenerator({ apiKey }: ReferenceGeneratorProps) 
 
     try {
       // Build reference images array in correct format
+      // Map category to reference type: characters -> character, objects -> object, environments -> anchor
+      const getReferenceType = (catKey: string): 'character' | 'anchor' | 'object' => {
+        if (catKey === 'characters') return 'character';
+        if (catKey === 'objects') return 'object';
+        return 'anchor'; // environments use anchor type
+      };
+
       const referenceImages: ReferenceImage[] = [];
       if (item.referenceImage) {
         referenceImages.push({
           id: genId(),
           file: item.referenceImage,
           preview: item.referencePreview || '',
+          referenceType: getReferenceType(categoryKey),
+          label: item.name || undefined,
         });
       }
 

@@ -1,9 +1,122 @@
 import { GoogleGenAI } from '@google/genai';
-import { GenerationRequest, GenerationResult } from '@/types';
-import { fileToBase64, getMimeType } from './utils';
+import { GenerationRequest, GenerationResult, ReferenceImage, ReferenceType } from '@/types';
+import { fileToBase64 } from './utils';
 
 // Correct model from Google AI Studio (Feb 2026)
 const IMAGE_MODEL = 'gemini-3-pro-image-preview';
+
+// Helper: Build overview text based on reference types
+function buildOverviewText(refs: ReferenceImage[]): string {
+  const charRefs = refs.filter(r => r.referenceType === 'character');
+  const objRefs = refs.filter(r => r.referenceType === 'object');
+  const anchorRefs = refs.filter(r => r.referenceType === 'anchor');
+
+  let overview = `INSTRUCTION: I am providing ${refs.length} reference image(s). Generate ONE new photorealistic image based on my description below.\n\nREFERENCE IMAGE ROLES:\n`;
+
+  let imageNum = 1;
+
+  // Characters first (highest priority)
+  for (const ref of charRefs) {
+    const name = ref.label || ref.file.name.replace(/\.[^/.]+$/, '');
+    overview += `- Image ${imageNum}: CHARACTER REFERENCE "${name}" → Match this person's FACE, skin tone, facial hair, and features EXACTLY in the output.\n`;
+    imageNum++;
+  }
+
+  // Objects second
+  for (const ref of objRefs) {
+    const name = ref.label || ref.file.name.replace(/\.[^/.]+$/, '');
+    overview += `- Image ${imageNum}: OBJECT REFERENCE "${name}" → The object must match this reference's design, color, texture EXACTLY.\n`;
+    imageNum++;
+  }
+
+  // Anchors last
+  for (const ref of anchorRefs) {
+    overview += `- Image ${imageNum}: STYLE/ENVIRONMENT REFERENCE (anchor) → Match ONLY environment type, lighting direction, color grading. DO NOT copy this image. Generate COMPLETELY DIFFERENT composition.\n`;
+    imageNum++;
+  }
+
+  overview += `\nCRITICAL RULES:\n`;
+
+  if (charRefs.length > 0) {
+    overview += `- CHARACTER faces must be the SHARPEST element. Pin-sharp eyes, clear skin texture, visible iris detail.\n`;
+  }
+
+  if (anchorRefs.length > 0) {
+    overview += `- ANCHOR/STYLE reference must NOT be copied. New composition, new camera angle.\n`;
+  }
+
+  overview += `- Output must be PHOTOREALISTIC. Not illustration, not cartoon, not oil painting, not digital art.\n`;
+  overview += `- No extra people beyond what is described.\n`;
+
+  return overview;
+}
+
+// Helper: Build label text for each image type
+function buildImageLabel(ref: ReferenceImage, index: number, total: number): string {
+  const name = ref.label || ref.file.name.replace(/\.[^/.]+$/, '');
+
+  switch (ref.referenceType) {
+    case 'character':
+      return `[IMAGE ${index} of ${total}] — CHARACTER REFERENCE: "${name}"
+This person's face, jawline, nose, eyes, eyebrows, skin tone, facial hair style, and hair MUST appear exactly in the generated image. Match the face from this image, not from any other attached image.`;
+
+    case 'anchor':
+      return `[IMAGE ${index} of ${total}] — STYLE/ENVIRONMENT REFERENCE (ANCHOR)
+⚠️ DO NOT reproduce this image. DO NOT copy its composition. ONLY extract: environment type, lighting direction and quality, color grading, contrast level. Generate a COMPLETELY NEW and DIFFERENT shot.`;
+
+    case 'object':
+      return `[IMAGE ${index} of ${total}] — OBJECT REFERENCE: "${name}"
+The object in the generated image must match this reference exactly: same shape, same materials, same colors, same design details, same size proportions.`;
+
+    default:
+      return `[IMAGE ${index} of ${total}] — REFERENCE: "${name}"`;
+  }
+}
+
+// Helper: Build final generation instruction with reminders
+function buildFinalInstruction(prompt: string, refs: ReferenceImage[]): string {
+  const hasCharacter = refs.some(r => r.referenceType === 'character');
+  const hasAnchor = refs.some(r => r.referenceType === 'anchor');
+
+  let instruction = `==================================================
+NOW GENERATE THE FOLLOWING IMAGE:
+==================================================
+
+${prompt}
+
+==================================================
+FINAL REMINDERS:
+==================================================
+`;
+
+  if (hasCharacter) {
+    instruction += `- Character face(s) MUST match their reference image(s) exactly. Face is the SHARPEST element.
+- If face doesn't match reference, the output is WRONG. This is the #1 priority.
+`;
+  }
+
+  if (hasAnchor) {
+    instruction += `- This must be a NEW image. NOT a copy of the anchor/style reference.
+- Camera angle and composition must be DIFFERENT from the anchor.
+`;
+  }
+
+  instruction += `- Output: photorealistic photograph. NOT illustration, NOT painting, NOT cartoon.
+- No extra people beyond what is described.`;
+
+  return instruction;
+}
+
+// Helper: Sort references by priority (character > object > anchor)
+function sortReferencesByPriority(refs: ReferenceImage[]): ReferenceImage[] {
+  const priority: Record<ReferenceType, number> = {
+    character: 1,
+    object: 2,
+    anchor: 3,
+  };
+
+  return [...refs].sort((a, b) => priority[a.referenceType] - priority[b.referenceType]);
+}
 
 export async function generateImage(
   apiKey: string,
@@ -12,27 +125,27 @@ export async function generateImage(
   try {
     const ai = new GoogleGenAI({ apiKey });
 
-    // Build content parts
+    // Build parts array with interleaved text + images
     const parts: any[] = [];
 
-    // Add reference images if provided
     if (request.referenceImages && request.referenceImages.length > 0) {
-      // Add text prompt FIRST with clear instructions
-      parts.push({
-        text: `I am attaching ${request.referenceImages.length} reference image(s). Please analyze these images carefully and use them as visual reference for style, composition, colors, and visual elements. Then generate a NEW image based on this description:\n\n${request.prompt}\n\nIMPORTANT: The generated image MUST incorporate visual elements, style, and aesthetics from the reference images I've provided.`,
-      });
+      // Sort by priority: character > object > anchor
+      const sortedRefs = sortReferencesByPriority(request.referenceImages);
+      const total = sortedRefs.length;
 
-      // Then add all images as inlineData parts
-      for (const ref of request.referenceImages) {
+      // PART 1: Overview instruction
+      parts.push({ text: buildOverviewText(sortedRefs) });
+
+      // PARTS 2-N: Label + Image pairs (interleaved)
+      for (let i = 0; i < sortedRefs.length; i++) {
+        const ref = sortedRefs[i];
         const base64Data = await fileToBase64(ref.file);
         const mimeType = ref.file.type || 'image/jpeg';
 
-        console.log('Adding reference image:', {
-          name: ref.file.name,
-          mimeType,
-          dataLength: base64Data.length,
-        });
+        // Add label text
+        parts.push({ text: buildImageLabel(ref, i + 1, total) });
 
+        // Add image
         parts.push({
           inlineData: {
             data: base64Data,
@@ -40,76 +153,40 @@ export async function generateImage(
           },
         });
       }
+
+      // LAST PART: Generation prompt with reminders
+      parts.push({ text: buildFinalInstruction(request.prompt, sortedRefs) });
     } else {
+      // No reference images - just prompt
       parts.push({ text: request.prompt });
     }
 
     console.log('Sending to Gemini - Total parts:', parts.length, 'Reference images:', request.referenceImages?.length || 0);
 
-    // Config with imageConfig for aspect ratio and size
+    // Config
     const config: any = {
       responseModalities: ['IMAGE', 'TEXT'],
     };
 
-    // Add imageConfig - skip aspectRatio if 'free' (let Gemini decide)
     const imageConfig: any = {};
-
     if (request.aspectRatio && request.aspectRatio !== 'free') {
       imageConfig.aspectRatio = request.aspectRatio;
     }
-
     if (request.imageSize) {
       imageConfig.imageSize = request.imageSize;
     }
-
     if (Object.keys(imageConfig).length > 0) {
       config.imageConfig = imageConfig;
     }
 
-    // Build contents - use multi-turn if we have reference images
-    let contents: any[];
+    // Single turn with all parts
+    const contents = [
+      {
+        role: 'user',
+        parts,
+      },
+    ];
 
-    if (request.referenceImages && request.referenceImages.length > 0) {
-      // Multi-turn approach: First message with images, second with prompt
-      const imageParts: any[] = [];
-      for (const ref of request.referenceImages) {
-        const base64Data = await fileToBase64(ref.file);
-        const mimeType = ref.file.type || 'image/jpeg';
-        imageParts.push({
-          inlineData: {
-            data: base64Data,
-            mimeType: mimeType,
-          },
-        });
-      }
-
-      contents = [
-        {
-          role: 'user',
-          parts: [
-            { text: `Here are ${request.referenceImages.length} reference image(s). Please remember these for the next request:` },
-            ...imageParts,
-          ],
-        },
-        {
-          role: 'model',
-          parts: [{ text: `I have analyzed the ${request.referenceImages.length} reference image(s). I will use them as visual reference for style, composition, and visual elements. What would you like me to create?` }],
-        },
-        {
-          role: 'user',
-          parts: [{ text: `Using the reference images I provided, generate a new image with this description:\n\n${request.prompt}\n\nMake sure to incorporate the visual style and elements from the reference images.` }],
-        },
-      ];
-    } else {
-      contents = [
-        {
-          role: 'user',
-          parts,
-        },
-      ];
-    }
-
-    // Use streaming to get the response (as per Google's example)
     const response = await ai.models.generateContentStream({
       model: IMAGE_MODEL,
       config,
@@ -120,9 +197,7 @@ export async function generateImage(
     let textResponse = '';
 
     for await (const chunk of response) {
-      if (!chunk.candidates?.[0]?.content?.parts) {
-        continue;
-      }
+      if (!chunk.candidates?.[0]?.content?.parts) continue;
 
       for (const part of chunk.candidates[0].content.parts) {
         if ((part as any).inlineData) {
@@ -136,10 +211,7 @@ export async function generateImage(
     }
 
     if (images.length > 0) {
-      return {
-        success: true,
-        images,
-      };
+      return { success: true, images };
     }
 
     if (textResponse) {
@@ -149,131 +221,7 @@ export async function generateImage(
       };
     }
 
-    return {
-      success: false,
-      error: 'No image generated. Try a different prompt.',
-    };
-  } catch (error: any) {
-    return handleError(error);
-  }
-}
-
-// Grid Maker: Generate a grid of images with numbered cells
-export async function generateGrid(
-  apiKey: string,
-  prompt: string,
-  referenceImages: { id: string; file: File; preview: string }[],
-  aspectRatio: string
-): Promise<GenerationResult> {
-  try {
-    const ai = new GoogleGenAI({ apiKey });
-
-    // Use user's prompt directly - no additional instructions
-    const gridPrompt = prompt;
-
-    console.log(`Generating grid with user prompt`);
-
-    // Build contents with optional reference images
-    let contents: any[];
-
-    if (referenceImages && referenceImages.length > 0) {
-      // Multi-turn with reference images
-      const imageParts: any[] = [];
-      for (const ref of referenceImages) {
-        const base64Data = await fileToBase64(ref.file);
-        const mimeType = ref.file.type || 'image/jpeg';
-        imageParts.push({
-          inlineData: {
-            data: base64Data,
-            mimeType: mimeType,
-          },
-        });
-      }
-
-      contents = [
-        {
-          role: 'user',
-          parts: [
-            { text: `Here are ${referenceImages.length} reference image(s). Use these as style/visual reference:` },
-            ...imageParts,
-          ],
-        },
-        {
-          role: 'model',
-          parts: [{ text: `I have analyzed the ${referenceImages.length} reference image(s). I will use them as visual reference for style, composition, and visual elements when creating the grid.` }],
-        },
-        {
-          role: 'user',
-          parts: [{ text: gridPrompt }],
-        },
-      ];
-    } else {
-      contents = [
-        {
-          role: 'user',
-          parts: [{ text: gridPrompt }],
-        },
-      ];
-    }
-
-    const config: any = {
-      responseModalities: ['IMAGE', 'TEXT'],
-    };
-
-    // Add imageConfig - skip aspectRatio if 'free' (let Gemini decide)
-    const gridImageConfig: any = {
-      imageSize: '2K', // Higher resolution for better cell extraction
-    };
-
-    if (aspectRatio && aspectRatio !== 'free') {
-      gridImageConfig.aspectRatio = aspectRatio;
-    }
-
-    config.imageConfig = gridImageConfig;
-
-    const response = await ai.models.generateContentStream({
-      model: IMAGE_MODEL,
-      config,
-      contents,
-    });
-
-    const images: string[] = [];
-    let textResponse = '';
-
-    for await (const chunk of response) {
-      if (!chunk.candidates?.[0]?.content?.parts) {
-        continue;
-      }
-
-      for (const part of chunk.candidates[0].content.parts) {
-        if ((part as any).inlineData) {
-          const inlineData = (part as any).inlineData;
-          const base64Image = `data:${inlineData.mimeType};base64,${inlineData.data}`;
-          images.push(base64Image);
-        } else if ((part as any).text) {
-          textResponse += (part as any).text;
-        }
-      }
-    }
-
-    if (images.length > 0) {
-      return {
-        success: true,
-        images,
-      };
-    }
-
-    if (textResponse) {
-      return {
-        success: false,
-        error: `Model returned text: ${textResponse.substring(0, 100)}...`,
-      };
-    }
-
-    return {
-      success: false,
-      error: 'No grid generated. Try again.',
-    };
+    return { success: false, error: 'No image generated. Try a different prompt.' };
   } catch (error: any) {
     return handleError(error);
   }
@@ -283,7 +231,6 @@ function handleError(error: any): GenerationResult {
   const message = error.message || String(error);
   console.error('Gemini error:', message);
 
-  // Rate limit
   if (
     message.includes('429') ||
     message.includes('quota') ||
@@ -293,7 +240,6 @@ function handleError(error: any): GenerationResult {
     return { success: false, error: 'RATE_LIMITED' };
   }
 
-  // Invalid key
   if (
     message.includes('400') ||
     message.includes('401') ||
@@ -305,7 +251,6 @@ function handleError(error: any): GenerationResult {
     return { success: false, error: 'Invalid API key. Please check and try again.' };
   }
 
-  // Safety filter
   if (
     message.includes('SAFETY') ||
     message.includes('blocked') ||
@@ -315,7 +260,6 @@ function handleError(error: any): GenerationResult {
     return { success: false, error: 'Content blocked by safety filters. Try a different prompt.' };
   }
 
-  // Model not found
   if (
     message.includes('404') ||
     message.includes('not found') ||
@@ -329,7 +273,6 @@ function handleError(error: any): GenerationResult {
 }
 
 // Helper: Mask all cells except target cell (black out others)
-// This makes Gemini see it as a single image, not a grid
 async function maskGridExceptCell(
   gridImage: File,
   row: number,
@@ -347,7 +290,6 @@ async function maskGridExceptCell(
       img.src = imageUrl;
     });
 
-    // Create canvas with FULL grid size
     const canvas = document.createElement('canvas');
     canvas.width = loadedImage.width;
     canvas.height = loadedImage.height;
@@ -358,26 +300,21 @@ async function maskGridExceptCell(
       return null;
     }
 
-    // Fill entire canvas with black
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Calculate cell dimensions
     const cellWidth = loadedImage.width / totalCols;
     const cellHeight = loadedImage.height / totalRows;
     const sourceX = (col - 1) * cellWidth;
     const sourceY = (row - 1) * cellHeight;
 
-    // Draw ONLY the target cell in its original position
     ctx.drawImage(
       loadedImage,
-      sourceX, sourceY, cellWidth, cellHeight,  // Source: the target cell
-      sourceX, sourceY, cellWidth, cellHeight   // Dest: same position (keep in place)
+      sourceX, sourceY, cellWidth, cellHeight,
+      sourceX, sourceY, cellWidth, cellHeight
     );
 
-    // Get as data URL (full quality PNG)
     const dataUrl = canvas.toDataURL('image/png', 1.0);
-
     URL.revokeObjectURL(imageUrl);
     return dataUrl;
   } catch (error) {
@@ -386,9 +323,6 @@ async function maskGridExceptCell(
   }
 }
 
-// Grid Cell Extraction: Mask approach
-// Step 1: Black out all cells except target (Gemini sees single image)
-// Step 2: Gemini extracts and upscales the visible cell
 export async function extractGridCell(
   apiKey: string,
   gridImage: File,
@@ -402,21 +336,16 @@ export async function extractGridCell(
   try {
     const ai = new GoogleGenAI({ apiKey });
 
-    console.log(`Step 1: Masking grid - only cell [${row},${col}] visible from ${totalRows}x${totalCols} grid`);
+    console.log(`Masking grid - only cell [${row},${col}] visible from ${totalRows}x${totalCols} grid`);
 
-    // Step 1: Mask all cells except target (black out others)
     const maskedDataUrl = await maskGridExceptCell(gridImage, row, col, totalRows, totalCols);
 
     if (!maskedDataUrl) {
       return { success: false, error: 'Failed to mask grid' };
     }
 
-    // Extract base64 from data URL
     const maskedBase64 = maskedDataUrl.split(',')[1];
 
-    console.log(`Step 2: Sending masked image to Gemini for extraction`);
-
-    // Step 2: Send masked image - Gemini will see one image on black background
     const contents = [
       {
         role: 'user',
@@ -439,7 +368,6 @@ CRITICAL RULES:
 - Output must FILL THE ENTIRE CANVAS - no black borders anywhere
 - DO NOT show the image small with black around it
 - DO NOT duplicate or repeat the image
-- DO NOT show multiple versions (small/large) of same image
 - The output should be ONE image that fills 100% of the frame
 
 PRESERVE EXACTLY:
@@ -448,12 +376,6 @@ PRESERVE EXACTLY:
 - Same faces, characters, objects
 - Same style and aesthetic
 - Remove corner number labels if any
-
-FORBIDDEN:
-- Black borders or background in output
-- Multiple copies of the image
-- Image shown at different sizes
-- Any modifications to the scene
 
 OUTPUT: Single full-frame high-resolution image.${customPrompt ? `\n\n${customPrompt}` : ''}`,
           },
@@ -465,9 +387,8 @@ OUTPUT: Single full-frame high-resolution image.${customPrompt ? `\n\n${customPr
       responseModalities: ['IMAGE', 'TEXT'],
     };
 
-    // Add imageConfig - skip aspectRatio if 'free' (let Gemini decide)
     const extractImageConfig: any = {
-      imageSize: '2K', // Higher resolution output
+      imageSize: '2K',
     };
 
     if (aspectRatio && aspectRatio !== 'free') {
@@ -486,9 +407,7 @@ OUTPUT: Single full-frame high-resolution image.${customPrompt ? `\n\n${customPr
     let textResponse = '';
 
     for await (const chunk of response) {
-      if (!chunk.candidates?.[0]?.content?.parts) {
-        continue;
-      }
+      if (!chunk.candidates?.[0]?.content?.parts) continue;
 
       for (const part of chunk.candidates[0].content.parts) {
         if ((part as any).inlineData) {
@@ -502,10 +421,7 @@ OUTPUT: Single full-frame high-resolution image.${customPrompt ? `\n\n${customPr
     }
 
     if (images.length > 0) {
-      return {
-        success: true,
-        images,
-      };
+      return { success: true, images };
     }
 
     if (textResponse) {
@@ -515,16 +431,12 @@ OUTPUT: Single full-frame high-resolution image.${customPrompt ? `\n\n${customPr
       };
     }
 
-    return {
-      success: false,
-      error: 'No image generated. Try again.',
-    };
+    return { success: false, error: 'No image generated. Try again.' };
   } catch (error: any) {
     return handleError(error);
   }
 }
 
-// Regenerate cell with custom prompt - uses same multi-turn approach
 export async function regenerateGridCell(
   apiKey: string,
   gridImage: File,
@@ -535,7 +447,6 @@ export async function regenerateGridCell(
   aspectRatio: string,
   customPrompt?: string
 ): Promise<GenerationResult> {
-  // Use the same full-grid approach as extractGridCell
   return extractGridCell(
     apiKey,
     gridImage,
@@ -556,7 +467,6 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
   try {
     const ai = new GoogleGenAI({ apiKey });
 
-    // Simple validation with a basic model
     const response = await ai.models.generateContent({
       model: 'gemini-2.0-flash',
       contents: 'Say OK',

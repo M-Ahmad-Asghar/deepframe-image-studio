@@ -9,7 +9,6 @@ import { GeneratedGallery } from './GeneratedGallery';
 import { ApiKeyManager } from './ApiKeyManager';
 import { ImagePreview } from './ImagePreview';
 import { GridExtractor } from './GridExtractor';
-import { GridMaker } from './GridMaker';
 import ReferenceGenerator from './ReferenceGenerator';
 import { cn } from '@/lib/utils';
 import {
@@ -43,7 +42,7 @@ const IMAGE_SIZES: { value: ImageSize; label: string }[] = [
   { value: '2K', label: '2K (2048px)' },
 ];
 
-type TabType = 'generate' | 'gridmaker' | 'extract' | 'references';
+type TabType = 'generate' | 'extract' | 'references';
 
 export function ImageGenerator() {
   const [activeTab, setActiveTab] = useState<TabType>('generate');
@@ -179,16 +178,6 @@ export function ImageGenerator() {
                 Generate
               </button>
               <button
-                onClick={() => setActiveTab('gridmaker')}
-                className={cn(
-                  'tab-button',
-                  activeTab === 'gridmaker' && 'active'
-                )}
-              >
-                <Grid3X3 className="w-4 h-4" />
-                Grid Maker
-              </button>
-              <button
                 onClick={() => setActiveTab('extract')}
                 className={cn(
                   'tab-button',
@@ -209,11 +198,6 @@ export function ImageGenerator() {
                 References
               </button>
             </div>
-
-            {/* Grid Maker Tab */}
-            {activeTab === 'gridmaker' && (
-              <GridMaker />
-            )}
 
             {/* Grid Extractor Tab */}
             {activeTab === 'extract' && (

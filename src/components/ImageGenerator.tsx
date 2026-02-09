@@ -11,6 +11,7 @@ import { ImagePreview } from './ImagePreview';
 import { GridExtractor } from './GridExtractor';
 import ReferenceGenerator from './ReferenceGenerator';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import {
   Sparkles,
   Loader2,
@@ -26,6 +27,7 @@ import {
   Zap,
   Grid3X3,
   Users,
+  MessageSquare,
 } from 'lucide-react';
 
 const ASPECT_RATIOS: { value: AspectRatio; label: string; icon: string }[] = [
@@ -130,6 +132,18 @@ export function ImageGenerator() {
                 {availableKeysCount} key{availableKeysCount !== 1 ? 's' : ''} available
               </span>
             )}
+
+            {/* DEEPFRAME Chat Link */}
+            <Link
+              href="/deepframe-chat"
+              className="btn btn-icon hover:bg-[var(--secondary)] relative group"
+              title="DEEPFRAME Chat"
+            >
+              <MessageSquare className="w-5 h-5" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] bg-[var(--secondary)] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                AI Chat
+              </span>
+            </Link>
 
             <button
               onClick={() => setShowHistory(!showHistory)}

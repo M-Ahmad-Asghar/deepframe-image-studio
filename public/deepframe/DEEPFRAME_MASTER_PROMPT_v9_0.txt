@@ -150,9 +150,10 @@ DECISION FLOWCHART:
 🚨🚨🚨 ABSOLUTE TOP 4 PRIORITIES - NEVER SKIP! 🚨🚨🚨
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║   🔴 PRIORITY 1: ANCHOR IMAGE METHOD                            ║
-║   Before ANY scene → Generate ANCHOR IMAGE first!           ║
-║   ALL other frames use Anchor + Character refs!             ║
+║   🔴 PRIORITY 1: ENVIRONMENT DNA PASSPORT                       ║
+║   Before ANY scene → Write DNA Passport text first!          ║
+║   ALL frames use Character refs + DNA Passport TEXT!         ║
+║   ⛔ NEVER attach environment images to Gemini!              ║
 ║                                                               ║
 ║   🔴 PRIORITY 2: SCENE PREP PACKAGE (Before clips!)           ║
 ║   Every scene MUST have these BEFORE any clip prompts:      ║
@@ -242,7 +243,7 @@ DECISION FLOWCHART:
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ PILLAR 5: 🎬 VISUAL CONSISTENCY (Anchor Image Method!)    ┃
+┃ PILLAR 5: 🎬 VISUAL CONSISTENCY (Environment DNA Passport!) ┃
 ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
 ┃ • CHARACTER consistency (same face, same clothes)           ┃
 ┃ • LIGHTING consistency (same direction, quality)            ┃
@@ -311,7 +312,8 @@ DECISION FLOWCHART:
 ║ 🎬 PILLAR 5 - VISUAL:                                        ║
 ║ ☐ Color Passport defined for scene?                          ║
 ║ ☐ CHARACTER LOCK in every prompt?                            ║
-║ ☐ Anchor Image generated and used as reference for ALL frames? ║
+║ ☐ Environment DNA Passport written and used in ALL frames?   ║
+║ ☐ ⛔ NO environment/anchor images attached to Gemini?       ║
 ║                                                               ║
 ║ 📈 PILLAR 6 - PACING:                                        ║
 ║ ☐ Shot types varied (not all same type)?                     ║
@@ -427,18 +429,21 @@ prompts.
 
 
 
-🚨 TOP PRIORITY REMINDER: ANCHOR IMAGE METHOD! 🚨
+🚨 TOP PRIORITY REMINDER: ENVIRONMENT DNA PASSPORT! 🚨
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                               ║
 ║   🎬 BEFORE GENERATING ANY SCENE PROMPTS, YOU MUST:          ║
 ║                                                               ║
 ║   1. CREATE Scene Shot Plan (all clips mapped out)           ║
-║   2. GENERATE 1 ANCHOR IMAGE first (hero shot of scene)     ║
-║   3. ALL other frames: Attach Character Refs + Anchor Image  ║
+║   2. WRITE an ENVIRONMENT DNA PASSPORT for the scene         ║
+║      (detailed TEXT description of location, lighting,       ║
+║      architecture, colors, atmosphere — NO image!)           ║
+║   3. ALL frames: Attach Character Ref(s) ONLY               ║
+║      + COPY-PASTE the DNA Passport text into prompt          ║
 ║                                                               ║
-║   ⛔ DO NOT generate clips without Anchor Image first!        ║
+║   ⛔ DO NOT attach environment/anchor images to Gemini!       ║
 ║   ⛔ DO NOT skip the Shot Plan step!                          ║
-║   ⛔ DO NOT forget to attach references to EVERY prompt!     ║
+║   ⛔ DO NOT forget Character Refs for EVERY character frame!  ║
 ║                                                               ║
 ║   See PHASE 4 → "MANDATORY: ANCHOR IMAGE CHECKPOINT"        ║
 ║                                                               ║
@@ -466,104 +471,314 @@ prompts.
 🎬 IMAGE-VIDEO ACTION SYNC SYSTEM (CRITICAL!)
 
 
-🎬 ANCHOR IMAGE CONSISTENCY SYSTEM (HOLLYWOOD METHOD)
+🎬 ENVIRONMENT DNA PASSPORT SYSTEM (TESTED & PROVEN!)
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                               ║
 ║   🎬 THE SECRET TO PERFECT VISUAL CONSISTENCY!                ║
 ║                                                               ║
-║   For each scene, generate 1 ANCHOR IMAGE first (the hero   ║
-║   shot). Then generate ALL remaining frames by attaching:    ║
-║     1. Character reference images (plain background)         ║
-║     2. The ANCHOR IMAGE as scene reference                   ║
-║   + Copy-paste the SAME descriptions into EVERY prompt!      ║
+║   ⛔ DO NOT attach environment/anchor images to Gemini!       ║
+║   Attaching environment images causes GREEN SCREEN effect    ║
+║   — character gets PASTED on top of background image.        ║
 ║                                                               ║
-║   Result: PERFECT consistency across ALL frames!             ║
+║   ✅ Instead: Write a detailed TEXT description called        ║
+║   "ENVIRONMENT DNA PASSPORT" and COPY-PASTE it into         ║
+║   EVERY frame prompt for that scene.                         ║
+║                                                               ║
+║   Same TEXT = Gemini BUILDS same environment fresh           ║
+║   each time = character generated INSIDE it = NATURAL!       ║
 ║                                                               ║
 ╚══════════════════════════════════════════════════════════════╝
 
-WHY ANCHOR IMAGE METHOD IS SUPERIOR
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ OLD ANCHOR IMAGE METHOD (Problems):                                    ┃
-┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
-┃ ❌ Grid = one big image with 9-12 tiny cells                    ┃
-┃ ❌ Extracting cells = quality loss, blurry, distorted           ┃
-┃ ❌ Wrong cell aspect ratio = unusable frames                   ┃
-┃ ❌ Small cells lack detail for video generation                ┃
-┃ ❌ Characters often miss or change across cells                ┃
-┃ ❌ Cartoon-like results in small cells                         ┃
-┃ Result: EXTRACTION DESTROYS THE QUALITY!                      ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+WHY TEXT IS BETTER THAN IMAGE FOR CONSISTENCY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ ANCHOR IMAGE METHOD (Better!):                                  ┃
-┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
-┃ ✅ Each frame = FULL resolution individual image                ┃
-┃ ✅ Anchor Image LOCKS the visual DNA of the scene              ┃
-┃ ✅ Character ref + Anchor = DOUBLE consistency lock            ┃
-┃ ✅ Same detailed prompt text in every frame                    ┃
-┃ ✅ No extraction = no quality loss!                            ┃
-┃ ✅ Characters stay consistent (references attached every time) ┃
-┃ ✅ Photorealistic quality maintained                           ┃
-┃ Result: FULL QUALITY + PERFECT CONSISTENCY!                   ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+❌ ANCHOR IMAGE ATTACHED (Problems — TESTED!):
+┌──────────────────────────────────────────────────────────┐
+│ Gemini sees environment image as BACKDROP                 │
+│ → Generates character SEPARATELY                          │
+│ → PASTES character ON TOP of backdrop                     │
+│ → Character has DIFFERENT lighting/quality than bg        │
+│ → Result: GREEN SCREEN / COMPOSITED look                  │
+│                                                            │
+│ TESTED: Medium shots with anchor = ALWAYS fake            │
+│ TESTED: Same shot without anchor = NATURAL                │
+│ TESTED: Close-ups hide the problem (tiny bg visible)      │
+│ TESTED: Wide shots without char ref = natural             │
+│                                                            │
+│ CONCLUSION: Anchor image attachment CAUSES the problem!   │
+└──────────────────────────────────────────────────────────┘
+
+✅ ENVIRONMENT DNA PASSPORT (TEXT — TESTED!):
+┌──────────────────────────────────────────────────────────┐
+│ Gemini READS text description of environment             │
+│ → BUILDS environment from scratch                        │
+│ → Generates character INSIDE the environment             │
+│ → Character and environment = ONE unified render         │
+│ → Same lighting, same quality, same atmosphere           │
+│ → Result: CHARACTER BELONGS in the scene!                │
+│                                                            │
+│ Same text in every prompt = Same environment every time   │
+│ Character ref attached = Correct face every time          │
+│ No image attachment conflicts!                           │
+└──────────────────────────────────────────────────────────┘
 
 
-
-HOW THE ANCHOR IMAGE METHOD WORKS
+HOW THE DNA PASSPORT SYSTEM WORKS:
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
 ║  3 STEPS PER SCENE:                                         ║
 ║                                                              ║
 ║  STEP 1: PLAN — Create Shot Plan (all frames mapped out)    ║
-║  ├── Pick the ANCHOR frame (most characters + environment)  ║
-║  ├── List ALL other frames with shot type + story beat      ║
+║  ├── List ALL frames with shot type + story beat            ║
 ║  └── Note which character refs needed per frame             ║
 ║                                                              ║
-║  STEP 2: ANCHOR — Generate 1 ANCHOR IMAGE                   ║
-║  ├── Attach: ALL character reference images (plain bg)      ║
-║  ├── Attach: ALL object reference images                    ║
-║  ├── Paste: Detailed prompt with CHARACTER_LOCKS,           ║
-║  │   ENVIRONMENT, LIGHTING, VISUAL_STYLE, FRAME_DETAILS    ║
-║  ├── Generate → Review → Approve or Regenerate              ║
-║  └── This is your VISUAL DNA for the entire scene!          ║
+║  STEP 2: WRITE — Create ENVIRONMENT DNA PASSPORT            ║
+║  ├── Detailed TEXT document describing the location          ║
+║  ├── Covers: architecture, surfaces, lighting, colors,      ║
+║  │   atmosphere, key objects, camera rules                   ║
+║  ├── Uses HEX color codes for exact color matching          ║
+║  ├── This is your CONSISTENCY LOCK for the scene!           ║
+║  ├── Optionally: generate ONE test image (no char ref)      ║
+║  │   to verify the passport looks right — but NEVER         ║
+║  │   attach this test image to actual frame prompts!        ║
+║  └── Once approved, this text is LOCKED for the scene       ║
 ║                                                              ║
-║  STEP 3: FRAMES — Generate remaining frames individually    ║
+║  STEP 3: FRAMES — Generate frames individually              ║
 ║  ├── For EACH frame, attach to Gemini:                      ║
-║  │   📎 Character ref image(s) for chars visible in frame   ║
-║  │   📎 ⭐ ANCHOR IMAGE (always!)                           ║
-║  ├── Paste: Frame prompt (same CHARACTER_LOCKS, ENVIRONMENT,║
-║  │   LIGHTING, VISUAL_STYLE + unique FRAME_DETAILS)         ║
-║  ├── Prompt says: "Match the Anchor Image's environment,    ║
-║  │   lighting, and color grading EXACTLY"                   ║
-║  └── Generate → Each frame is FULL quality + consistent!    ║
+║  │   📎 Character ref(s) for chars visible in frame         ║
+║  │   📎 Object ref(s) if story objects visible              ║
+║  │   ⛔ NO environment/anchor images!                       ║
+║  ├── COPY-PASTE the DNA Passport's ENVIRONMENT and          ║
+║  │   LIGHTING sections into the prompt                      ║
+║  ├── Add frame-specific details (shot type, expression,     ║
+║  │   pose, action)                                          ║
+║  └── Generate → character naturally INSIDE environment!     ║
 ║                                                              ║
-║  WHY THIS WORKS (Triple Lock):                              ║
-║  ├── Character ref = face/body consistency                  ║
-║  ├── Anchor image = environment/lighting/color consistency  ║
-║  ├── Same prompt text = detail consistency                  ║
-║  └── Gemini has NO room to drift!                           ║
+║  WHY THIS WORKS:                                            ║
+║  ├── Character ref = face/body consistency per frame        ║
+║  ├── DNA Passport text = environment consistency            ║
+║  ├── No image attachment = no compositing problem!          ║
+║  └── Gemini builds everything as ONE unified scene!         ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
 
 
-
-CHOOSING THE RIGHT ANCHOR FRAME
+ENVIRONMENT DNA PASSPORT — UNIVERSAL TEMPLATE:
 ═══════════════════════════════════════════════════════════════
-The ANCHOR should be the frame that shows the MOST visual DNA:
+╔══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║   This template works for ANY scene type:                    ║
+║   Indoor / Outdoor / Mixed / Any era / Any genre             ║
+║   Fill in ONLY the sections that apply to your scene.        ║
+║   Skip sections that don't apply (mark N/A).                 ║
+║                                                               ║
+╚══════════════════════════════════════════════════════════════╝
 
-BEST ANCHOR CANDIDATES:
-├── Frame with the MOST characters clearly visible
-├── Frame where environment is fully shown
-├── Frame where lighting is most representative
-├── Usually a MEDIUM or MEDIUM-WIDE shot
-├── Usually a "core action" or "peak moment" frame
-└── NOT an extreme wide (faces too small) or close-up (no environment)
+▼▼▼ TEMPLATE START ▼▼▼
 
-EXAMPLES:
-├── Action scene: Pick the peak action frame with hero + environment
-├── Dialogue scene: Pick the two-shot with both characters + location
-├── Discovery scene: Pick the moment character interacts with key object
-└── Group scene: Pick the frame with most characters visible together
+SCENE [X] — ENVIRONMENT DNA PASSPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOCATION: [One-line description — e.g., "Narrow rocky 
+mountain pass (Ghaat) at night" or "Mughal Emperor's 
+private audience chamber" or "Dense jungle riverbank 
+at dawn"]
+
+SPACE & STRUCTURE:
+- Type: [open field / narrow pass / enclosed room / 
+  tent / courtyard / cave / rooftop / boat deck]
+- Size: [approximate dimensions if indoor, or sense 
+  of scale if outdoor]
+- Ceiling/Sky: [vaulted dome / wooden beams / open sky / 
+  tree canopy / tent fabric / cave roof]
+- Floor/Ground: [marble / stone / dirt / gravel / grass / 
+  sand / water / carpet over stone]
+- Walls/Boundaries: [cliff faces / plastered walls / 
+  tree line / tent walls / building facades / none]
+- Key structural features: [pillars / archways / 
+  boulders / bridges / staircases / balconies]
+
+SURFACES & TEXTURES:
+- Primary surface: [rough hewn rock / polished marble / 
+  mud-brick / wooden planks] + color (#hex)
+- Secondary surface: [carved sandstone / fabric 
+  tapestries / mossy stone / metal] + color (#hex)
+- Condition: [pristine / weathered / battle-damaged / 
+  ancient crumbling / freshly built]
+- Details: [cracks / moss / bloodstains / carvings / 
+  water stains / burn marks]
+
+KEY OBJECTS (always present in this scene):
+- [Object 1: description, material, position in space, 
+  size, condition]
+- [Object 2: ...]
+- [Object 3: ...]
+(Only list objects that appear in MULTIPLE clips. 
+Single-clip objects go in the frame prompt, not here.)
+
+LIGHTING:
+- Primary source: [what, where, color (#hex), intensity, 
+  what it illuminates]
+- Secondary source: [what, where, color (#hex), intensity]
+- Tertiary source: [if any]
+- Shadow direction: [from where to where]
+- Shadow color: (#hex)
+- Overall contrast: [high / medium / low]
+- Overall temperature: [warm dominant / cool dominant / 
+  mixed warm-cool]
+
+COLOR PALETTE:
+- Shadows: (#hex)
+- Midtones: (#hex)
+- Highlights: (#hex)
+- Accent color: (#hex) [if any — e.g., red carpet, 
+  green foliage, blue moonlight]
+
+ATMOSPHERE:
+- Air quality: [clear / dusty / smoky / misty / foggy / 
+  rainy / snowy]
+- Particles: [dust in light beams / incense smoke / 
+  fireplace embers / rain drops / snowflakes / none]
+- Temperature feel: [hot dry / warm humid / cool crisp / 
+  cold damp / freezing]
+- Wind/Air movement: [still / gentle breeze / strong 
+  gusts / storm wind]
+
+TIME & WEATHER:
+- Time: [dawn / morning / noon / afternoon / golden hour / 
+  dusk / night / deep night]
+- Weather: [clear / overcast / stormy / raining / snowing / 
+  foggy]
+- Moon/Sun position: [if relevant to lighting]
+
+AUDIO ENVIRONMENT (for video prompts):
+- Ambient: [echo in stone / wind through pass / 
+  river flowing / marketplace bustle / silence]
+- Background: [distant sounds — battle / birds / 
+  rain / crowd / nothing]
+
+STYLE & MOOD:
+- Visual style: [gritty war film / lush period drama / 
+  dark thriller / warm family story / epic adventure]
+- Film reference: [looks like shot from Gladiator / 
+  Bahubali / Jodhaa Akbar / Game of Thrones / etc.]
+- Camera note: [ARRI Alexa / natural film grain / 
+  anamorphic lens / handheld gritty / steady composed]
+
+▲▲▲ TEMPLATE END ▲▲▲
+
+
+HOW TO USE THE DNA PASSPORT IN FRAME PROMPTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+For EVERY frame prompt in the scene, COPY-PASTE the 
+DNA Passport's key sections into the ENVIRONMENT 
+and LIGHTING parts of the prompt.
+
+You DON'T paste the entire passport — you paste 
+a CONDENSED version (3-5 lines) that captures 
+the essential visual DNA.
+
+CONDENSED VERSION EXAMPLE (from a full passport):
+
+Full passport has 40+ lines. Condense to:
+
+"He is standing inside a narrow rocky mountain pass 
+at night. Steep jagged cliff walls rise high on both 
+sides. Rocky gravel ground with scattered debris. 
+Fire burns nearby on ground to his left casting warm 
+orange glow. Air thick with smoke and dust. Dark 
+stormy sky barely visible between cliff tops above."
+
+This condensed version goes into EVERY frame prompt's 
+<ENVIRONMENT> section — word for word, same text.
+
+CONDENSED LIGHTING (from passport):
+"Night scene. Fire on ground to left: warm orange 
+(#ff9d00) on left side of face and body. Moonlight 
+from above: cool blue (#6a7f99) on top surfaces. 
+High contrast. No studio lighting — only fire and 
+moonlight. Gritty, raw, war-photography look."
+
+This goes into EVERY frame prompt's <LIGHTING> section.
+
+FRAME PROMPT STRUCTURE (with DNA Passport):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📎 ATTACH TO GEMINI:
+   - Character ref(s) ONLY
+   ⛔ NO environment/anchor images!
+
+📋 PROMPT:
+
+<INSTRUCTION>
+Generate a photorealistic [SHOT TYPE] of [CHARACTER].
+Match character face reference EXACTLY. 16:9. No cartoon.
+This must look like a real photograph — character must 
+genuinely exist inside this environment, not placed on 
+a backdrop. Shot on [camera type] with [lens].
+</INSTRUCTION>
+
+<CHARACTER>
+[Character description — face, expression, clothing, 
+pose, action. From character blueprint.]
+</CHARACTER>
+
+<ENVIRONMENT>
+[COPY-PASTE condensed DNA Passport environment text.
+SAME text in every frame of this scene!]
+</ENVIRONMENT>
+
+<LIGHTING>
+[COPY-PASTE condensed DNA Passport lighting text.
+SAME text in every frame of this scene!]
+</LIGHTING>
+
+<FRAME_DETAILS>
+[THIS frame's unique details — shot type, camera angle, 
+camera distance, what's specifically visible, composition.]
+</FRAME_DETAILS>
+
+OUTPUT: 16:9 photorealistic. [Style from DNA Passport.]
+Character must look like they genuinely belong in this 
+environment — same lighting, same atmosphere, same grit.
+
+
+CONSISTENCY RULES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RULE 1: SAME TEXT EVERY TIME
+├── ENVIRONMENT section = IDENTICAL across all clips
+├── LIGHTING section = IDENTICAL across all clips
+├── Only FRAME_DETAILS and CHARACTER change per clip
+└── This ensures Gemini builds SAME room/location
+
+RULE 2: CHARACTER REF ONLY — NO ENVIRONMENT IMAGES
+├── ONLY attach character reference images
+├── NEVER attach environment/anchor/backdrop images
+├── Gemini must BUILD environment from TEXT
+└── This prevents green screen compositing
+
+RULE 3: HEX CODES FOR COLOR LOCKING
+├── Use hex codes in DNA Passport (#ff9d00, #0a0e17)
+├── Gemini follows hex codes more precisely than 
+│   color names ("orange" can be many shades)
+└── Same hex = same color every time
+
+RULE 4: DESCRIBE ENVIRONMENT VAGUELY, NOT SPECIFICALLY
+├── ✅ "Dark rocky canyon walls with fire glow"
+├── ❌ "Rock wall exactly 8 feet behind at 30 degrees"
+├── Vague = Gemini generates FRESH = natural
+├── Specific = Gemini tries to COPY = fake
+└── Let Gemini INTERPRET the mood, not replicate layout
+
+RULE 5: GRITTY REALISM KEYWORDS
+├── Add to EVERY prompt: "real photograph", "gritty",
+│   "not placed on backdrop", "belongs in environment"
+├── Add camera model: "Shot on ARRI Alexa" or similar
+├── Add imperfection: "subtle film grain", "not perfectly 
+│   centered", "raw war photography aesthetic"
+└── These keywords push Gemini toward unified rendering
 
 
 
@@ -874,153 +1089,119 @@ NOTE: Crowd count appears THREE times (Section 1, 9, 10).
 This is intentional — Gemini needs repetition for crowd control!
 
 
-ANCHOR IMAGE PROMPT STRUCTURE
+ENVIRONMENT DNA PASSPORT — WRITING GUIDE:
 ═══════════════════════════════════════════════════════════════
-Every ANCHOR prompt must have these sections:
 
-📎 ATTACH TO GEMINI:
-   - ALL character reference images (plain background)
-   - ALL object reference images
-
-📋 PASTE THIS PROMPT:
-
-<INSTRUCTION>
-[What to generate. State this is ANCHOR IMAGE.
-State to match ALL references EXACTLY.
-State photorealistic, 16:9, no cartoon.]
-</INSTRUCTION>
-
-<SCENE_CONTEXT>
-[Scene name, moment, what's happening, emotional state]
-</SCENE_CONTEXT>
-
-<CHARACTER_LOCKS>
-[Each character — "exact match to attached reference image #X"]
-</CHARACTER_LOCKS>
-
-<OBJECT_LOCK> (if applicable)
-[Object state — e.g., "CLOSED and SEALED"]
-</OBJECT_LOCK>
-
-<ENVIRONMENT>
-[Detailed location, ground, background, time, weather, air quality]
-</ENVIRONMENT>
-
-<LIGHTING>
-[Key light direction + %, Fill + %, Rim + %, Shadow direction]
-</LIGHTING>
-
-<FRAME_DETAILS>
-[Shot type, camera angle, camera distance,
-exact subject positions, background elements,
-depth of field, mood]
-</FRAME_DETAILS>
-
-<VISUAL_STYLE>
-[Photorealistic, color grading hex codes, saturation %,
-contrast %, exposure, aspect ratio]
-</VISUAL_STYLE>
-
-<CROWD_CONTROL>
-[How many people visible, extras = silhouettes only, etc.]
-</CROWD_CONTROL>
-
-OUTPUT: [Single image, aspect ratio, quality level]
+STEP 1: Identify your scene location
+STEP 2: Fill in the DNA Passport template (above)
+STEP 3: Write a CONDENSED VERSION (5-8 lines) for 
+        copy-pasting into frame prompts
+STEP 4: Optionally generate a TEST image (no char ref)
+        to verify colors/lighting — keep for YOUR eyes 
+        only, NEVER attach to Gemini!
+STEP 5: Lock the text — use SAME text in every frame
 
 
-
-INDIVIDUAL FRAME PROMPT STRUCTURE
+INDIVIDUAL FRAME PROMPT STRUCTURE (with DNA Passport):
 ═══════════════════════════════════════════════════════════════
-Every FRAME prompt (after Anchor) must have these sections:
+Every FRAME prompt must follow this structure:
 
 📎 ATTACH TO GEMINI:
    - Character ref(s) for characters VISIBLE in this frame
-   - ⭐ ANCHOR IMAGE (always!)
+   - Object ref(s) if key story objects visible
+   ⛔ NO environment/anchor images!
 
 📋 PASTE THIS PROMPT:
 
 <INSTRUCTION>
-[What to generate. State: "The LAST attached image is my
-ANCHOR — match its environment, lighting, color grading EXACTLY."
-State characters must match references. 16:9. No cartoon.]
+Generate a photorealistic [SHOT TYPE] of [CHARACTER].
+Match character face reference EXACTLY. 16:9. No cartoon.
+This must look like a real photograph taken on a real 
+film set — character genuinely exists inside this 
+environment. Shot on ARRI Alexa with [lens]mm lens.
 </INSTRUCTION>
 
-<SCENE_CONTEXT>
-[Same scene, but THIS frame's specific moment/beat]
-</SCENE_CONTEXT>
-
-<CHARACTER_LOCKS>
-[Only characters visible in THIS frame]
-</CHARACTER_LOCKS>
-
-<OBJECT_LOCK> (if visible)
-[Same object state as Anchor]
-</OBJECT_LOCK>
+<CHARACTER>
+[Character name — exact face match to reference.
+Face details, expression, clothing, pose, action.
+Skin condition (dust, sweat, grime — match environment).
+Props in hand if any.]
+</CHARACTER>
 
 <ENVIRONMENT>
-[SAME as Anchor — copy-paste word for word!
-Add "SAME as Anchor Image" at top.]
+[COPY-PASTE condensed DNA Passport — SAME TEXT every frame!
+Keep it 3-5 lines. Describe mood/feel, not exact positions.
+Let Gemini interpret and build fresh.]
 </ENVIRONMENT>
 
 <LIGHTING>
-[SAME as Anchor — copy-paste word for word!
-Add "SAME as Anchor Image" at top.]
+[COPY-PASTE condensed DNA Passport lighting — SAME every frame!
+Include hex codes. Describe light sources and what they hit.
+End with: "No studio lighting. No flat/even illumination.
+Only [light sources] exist."]
 </LIGHTING>
 
 <FRAME_DETAILS>
 [THIS frame's unique details:
-shot type, camera angle, distance,
-subject positions, actions, expressions,
-depth of field, mood]
+- Shot type and camera angle
+- Camera distance (approximate)
+- What's specifically visible in frame
+- Composition notes
+- Depth of field]
 </FRAME_DETAILS>
 
-<VISUAL_STYLE>
-[SAME as Anchor + "MUST match Anchor Image's visual DNA"]
-</VISUAL_STYLE>
+OUTPUT: 16:9 photorealistic. [Style from DNA Passport].
+Character must look like they genuinely belong in this 
+environment — same lighting, same atmosphere, same grit.
 
-OUTPUT: [Single image, must match Anchor's environment/colors]
-
-KEY RULE: ENVIRONMENT, LIGHTING, and VISUAL_STYLE sections are
-COPY-PASTED word-for-word from the Anchor prompt into every frame!
-Only FRAME_DETAILS changes per frame.
-
+KEY RULE: ENVIRONMENT and LIGHTING sections are 
+COPY-PASTED word-for-word from the DNA Passport 
+into every frame! Only FRAME_DETAILS and CHARACTER 
+change per frame.
 
 
-ANCHOR METHOD RULES (CRITICAL!)
+
+DNA PASSPORT RULES (CRITICAL!)
 ═══════════════════════════════════════════════════════════════
 
-RULE A1: ANCHOR FIRST — ALWAYS!
-├── NEVER generate any other frame before the Anchor
-├── Anchor = the visual DNA that locks everything
-├── Review and approve Anchor before proceeding
-└── If Anchor is bad → Regenerate until perfect
+RULE D1: DNA PASSPORT FIRST — ALWAYS!
+├── NEVER generate any frame before writing the DNA Passport
+├── DNA Passport = the consistency lock for entire scene
+├── Review and approve passport text before generating frames
+└── If first test image looks wrong → edit the passport TEXT
 
-RULE A2: HYBRID ATTACHMENT SYSTEM (MAXIMUM 3 IMAGES!)
+RULE D2: CHARACTER REF ONLY — NO ENVIRONMENT IMAGES!
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║   ⚠️ GEMINI CANNOT HANDLE 4+ ATTACHED IMAGES RELIABLY!       ║
-║   With 4+ images: Gemini copies the anchor image OR          ║
-║   merges characters OR ignores some references entirely.     ║
+║   ⛔ NEVER attach environment/anchor/backdrop images!         ║
+║   Attaching environment images = GREEN SCREEN effect.        ║
+║   Gemini PASTES character ON TOP of the image.               ║
 ║                                                               ║
-║   MAXIMUM 3 ATTACHMENTS PER PROMPT. NO EXCEPTIONS!           ║
+║   ✅ ONLY attach character reference images!                  ║
+║   Describe environment in TEXT only!                         ║
+║   Gemini BUILDS environment fresh = character INSIDE it!     ║
 ║                                                               ║
 ╚══════════════════════════════════════════════════════════════╝
 
-HOW TO DECIDE WHAT TO ATTACH (3 slots max):
+ATTACHMENT RULES (CHARACTER REFS ONLY!):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-SLOT PRIORITY:
+WHAT TO ATTACH (max 2-3 images):
 ┌────────┬────────────────────────────────────────────────┐
-│ Slot 1 │ ⭐ ANCHOR IMAGE (ALWAYS — environment lock)    │
-│        │ This is NON-NEGOTIABLE in every frame prompt   │
-├────────┼────────────────────────────────────────────────┤
-│ Slot 2 │ PRIMARY CHARACTER REF (the most prominent      │
+│ Slot 1 │ PRIMARY CHARACTER REF (the most prominent      │
 │        │ character in THIS specific frame)               │
 ├────────┼────────────────────────────────────────────────┤
-│ Slot 3 │ SECONDARY REF (choose ONE):                    │
+│ Slot 2 │ SECONDARY REF (choose ONE if needed):          │
 │        │ - 2nd character ref (if 2 chars in close shot) │
 │        │ - Object ref (if object is key focus)           │
-│        │ - NOTHING (if only 1 char + anchor is enough)  │
+│        │ - NOTHING (if only 1 char is enough)           │
+├────────┼────────────────────────────────────────────────┤
+│ Slot 3 │ TERTIARY REF (rare — only if 3 chars close):   │
+│        │ - 3rd character ref                             │
+│        │ - NOTHING (usually not needed)                 │
+├────────┼────────────────────────────────────────────────┤
+│ ⛔     │ NEVER: Environment/anchor/backdrop images!      │
+│        │ Environment described in TEXT via DNA Passport  │
 └────────┴────────────────────────────────────────────────┘
 
 WHAT ABOUT OTHER CHARACTERS / OBJECTS?
@@ -1073,74 +1254,40 @@ SHOT TYPE → ATTACHMENT STRATEGY:
 │                  │ NEVER attach 4+ character refs!           │
 └──────────────────┴──────────────────────────────────────────┘
 
-RULE A3: SAME PROMPT TEXT — WORD FOR WORD
+RULE D3: SAME DNA PASSPORT TEXT — WORD FOR WORD
 ├── ENVIRONMENT section = identical in ALL frame prompts
-├── LIGHTING section = identical in ALL frame prompts
-├── VISUAL_STYLE section = identical in ALL frame prompts
-├── CHARACTER_LOCKS = identical text for same characters
-├── Only FRAME_DETAILS section changes per frame
-└── DO NOT paraphrase or reword — exact copy-paste!
+├── LIGHTING section = identical in ALL frame prompts  
+├── Only FRAME_DETAILS and CHARACTER change per frame
+├── DO NOT paraphrase or reword — exact copy-paste!
+└── This is how consistency is maintained without images
 
-RULE A4: ANTI-COPY ANCHOR INSTRUCTION (CRITICAL!)
+RULE D4: DESCRIBE ENVIRONMENT VAGUELY — NOT SPECIFICALLY
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║   ⚠️ COMMON PROBLEM: Gemini COPIES the anchor image          ║
-║   instead of generating a NEW image that MATCHES it!         ║
-║                                                               ║
-║   This happens when the instruction is too vague.            ║
-║   "Match the anchor" → Gemini thinks "reproduce it"          ║
+║   ⚠️ VAGUE environment = Gemini GENERATES fresh = NATURAL    ║
+║   SPECIFIC environment = Gemini tries to REPLICATE = FAKE    ║
 ║                                                               ║
 ╚══════════════════════════════════════════════════════════════╝
 
-WRONG INSTRUCTION (causes Gemini to copy anchor):
-❌ "The LAST attached image is my ANCHOR — match it EXACTLY"
-❌ "Match the anchor image"
-❌ "Generate the same as anchor"
-(Gemini interprets "match exactly" as "copy this image!")
+✅ VAGUE (Gemini interprets freely):
+"Dark rocky canyon walls with distant fire glow. 
+Smoke drifting through the air. Night sky above."
+→ Gemini builds fresh environment, character INSIDE it
 
-CORRECT INSTRUCTION (generates NEW image with same STYLE):
-✅ Use this EXACT anti-copy text in EVERY frame prompt:
+❌ SPECIFIC (Gemini tries to match exactly):
+"Rock wall exactly 8 feet behind, torch 4 feet to left,
+5 arrows on ground, 3 fires at specific positions..."
+→ Gemini forces a specific layout = looks artificial
 
-"The LAST attached image is my STYLE REFERENCE (anchor).
-DO NOT reproduce or copy this image.
-Generate a COMPLETELY NEW and DIFFERENT scene/shot, but
-match ONLY these elements from the style reference:
-- Same environment TYPE (same location, architecture, terrain)
-- Same lighting DIRECTION and QUALITY
-- Same color grading and contrast level
-- Same level of photorealism
-The COMPOSITION, CAMERA ANGLE, and SUBJECT must be
-DIFFERENT from the style reference."
+RULE: Describe MOOD and TYPE, not POSITIONS and DISTANCES.
 
-WHY THIS WORKS:
-├── "DO NOT reproduce" = explicit anti-copy instruction
-├── "COMPLETELY NEW and DIFFERENT" = forces new generation
-├── "match ONLY these elements" = specific, not vague
-├── "COMPOSITION must be DIFFERENT" = prevents lazy copy
-└── Gemini now understands: new image, same visual world
-
-ALSO ADD THIS AT THE END OF EVERY PROMPT:
-"⚠️ IMPORTANT: This must be a NEW image, NOT a copy of any
-attached reference. The camera angle, composition, and
-subject positioning must be DIFFERENT from all attached images."
-
-TROUBLESHOOTING:
-If Gemini STILL copies the anchor:
-1. Move anchor to FIRST attachment (not last)
-2. Add more specific FRAME_DETAILS (exact camera angle, 
-   distance in feet, subject position in frame)
-3. Make the requested shot VERY different from anchor
-   (e.g., anchor is medium close → request extreme wide)
-4. If nothing works: DON'T attach anchor at all, instead
-   DESCRIBE the environment in extreme detail in the prompt
-   (copy-paste environment text from anchor prompt)
-
-RULE A5: REVIEW AFTER EACH FRAME
+RULE D5: REVIEW AFTER EACH FRAME
 ├── After generating each frame, quick-check:
 │   ☐ Character face matches reference?
-│   ☐ Environment matches Anchor?
-│   ☐ Lighting direction same as Anchor?
-│   ☐ Color grading same as Anchor?
+│   ☐ Environment matches DNA Passport description?
+│   ☐ Lighting direction matches DNA Passport?
+│   ☐ Color grading consistent with previous frames?
+│   ☐ Character looks INSIDE environment (not pasted)?
 │   ☐ Photorealistic (not cartoon)?
 │   ☐ Correct aspect ratio?
 ├── If ANY check fails → Regenerate that frame
@@ -1240,6 +1387,212 @@ SHOT-SPECIFIC FACE SHARPNESS:
 
 
 
+SEQUENTIAL GENERATION WORKFLOW (MANDATORY!)
+═══════════════════════════════════════════════════════════════
+╔══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║   ⛔ NEVER generate Image Prompt + Video Prompt together!    ║
+║                                                               ║
+║   Video prompt must be written AFTER seeing the ACTUAL       ║
+║   generated image — not before!                              ║
+║                                                               ║
+║   WHY: The image you PLANNED and the image Gemini MADE      ║
+║   are ALWAYS different. Video prompt for the PLANNED image   ║
+║   will NOT match the ACTUAL image = bad video result.        ║
+║                                                               ║
+╚══════════════════════════════════════════════════════════════╝
+
+THE PROBLEM WITH GENERATING BOTH AT ONCE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ OLD APPROACH (Image + Video prompt together):
+┌──────────────────────────────────────────────────────┐
+│ AI generates:                                          │
+│   Image prompt: "warrior raises mace overhead"        │
+│   Video prompt: "swings mace down very hard"          │
+│                                                        │
+│ User generates image in Gemini:                       │
+│   Actual image: mace is at SIDE (not overhead!)       │
+│                                                        │
+│ User copies video prompt to Grok:                     │
+│   Video prompt says "swings down" but mace is at side │
+│   → Grok confused → bad result!                       │
+│                                                        │
+│ Also: expression is different, pose is different,      │
+│ extra soldiers appeared, background changed...         │
+│ Video prompt doesn't match ANY of this!               │
+└──────────────────────────────────────────────────────┘
+
+✅ NEW APPROACH (Sequential — one at a time):
+┌──────────────────────────────────────────────────────┐
+│ Phase 1: AI gives IMAGE prompt only                   │
+│          User generates in Gemini                     │
+│                                                        │
+│ Phase 2: User shows ACTUAL image to AI                │
+│          "Image ready" or "Is this good?"             │
+│                                                        │
+│ Phase 3: AI ANALYSES actual image:                    │
+│          ├── Matches story intent? ✅/❌               │
+│          ├── Character looks correct? ✅/❌            │
+│          ├── Lighting matches anchor? ✅/❌            │
+│          ├── Expression right for scene? ✅/❌         │
+│          └── Pose suitable for planned action? ✅/❌   │
+│                                                        │
+│ Phase 4A: Image APPROVED → AI writes video prompt     │
+│           based on ACTUAL image (what's really there)  │
+│                                                        │
+│ Phase 4B: Image REJECTED → AI gives UPDATED image     │
+│           prompt with specific fixes                   │
+│           User regenerates → back to Phase 2          │
+│                                                        │
+│ Phase 5: User copies video prompt to Grok             │
+│          → PERFECT match because prompt was written   │
+│            for the ACTUAL image! ✅                    │
+└──────────────────────────────────────────────────────┘
+
+
+SEQUENTIAL WORKFLOW — STEP BY STEP:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 0: ENVIRONMENT DNA PASSPORT
+├── AI writes the DNA Passport text for the scene
+├── User reviews: colors, lighting, mood correct?
+├── Optionally: generate ONE test image (no char ref)
+│   to verify passport visually — keep for YOUR eyes 
+│   only, NEVER attach to Gemini!
+├── Passport approved → LOCK the text
+└── ⛔ Do not proceed until passport is approved!
+
+PHASE 1: IMAGE PROMPT (per clip)
+├── AI generates ONLY the image prompt for Clip [X.X]
+├── No video prompt yet!
+├── Prompt includes DNA Passport text (ENVIRONMENT + LIGHTING)
+├── User copies prompt to Gemini with attachments:
+│   📎 Character ref(s) for this clip ONLY
+│   ⛔ NO environment/anchor images!
+├── User generates image
+└── User replies: "Image ready" + attaches generated image
+
+PHASE 2: AI IMAGE ANALYSIS
+├── AI examines the actual generated image
+├── AI checks against story requirements:
+│   ┌────────────────────────────────────────────────┐
+│   │ CHECKLIST:                                      │
+│   │ ☐ Character face matches reference?            │
+│   │ ☐ Expression right for this story moment?      │
+│   │ ☐ Pose suitable for planned video action?      │
+│   │ ☐ Lighting matches anchor?                     │
+│   │ ☐ Color palette consistent with scene?         │
+│   │ ☐ Correct number of characters/objects?        │
+│   │ ☐ Era-authentic clothing/props?                │
+│   │ ☐ No modern elements visible?                  │
+│   │ ☐ Camera angle matches shot plan?              │
+│   └────────────────────────────────────────────────┘
+│
+├── IF ALL CHECKS PASS → "Image approved! ✅"
+│   └── Proceed to Phase 3
+│
+└── IF ANY CHECK FAILS → AI provides:
+    ├── What's wrong (specific issues identified)
+    ├── Updated image prompt with fixes highlighted
+    ├── User regenerates → back to Phase 1
+    └── Repeat until image approved
+
+PHASE 3: VIDEO PROMPT (based on ACTUAL image)
+├── AI writes video prompt by LOOKING at the actual image
+├── AI identifies from the image:
+│   ├── What's the character's ACTUAL pose? (not planned)
+│   ├── Where is the weapon/object ACTUALLY positioned?
+│   ├── What's the character's ACTUAL expression?
+│   ├── What elements are ACTUALLY in the background?
+│   ├── What's the ACTUAL camera angle?
+│   └── What movement makes sense FROM THIS starting point?
+│
+├── AI applies SCENE TYPE DETECTION:
+│   ├── Subtle scene → 80-100 word detailed prompt
+│   └── Action scene → 10-25 word minimal prompt
+│
+├── Video prompt describes ONLY what CHANGES from image
+├── User copies to Grok with image attached
+└── Result: Video prompt PERFECTLY matches starting image! ✅
+
+PHASE 4: NEXT CLIP
+├── After video generated, user can share result (optional)
+├── AI provides next clip's IMAGE prompt
+├── Cycle repeats: Image → Review → Video → Next
+└── Continue until all clips in scene complete
+
+
+WHY SEQUENTIAL IS BETTER (TESTED!):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────┬──────────────────────────────┐
+│ OLD (Together)            │ NEW (Sequential)              │
+├──────────────────────────┼──────────────────────────────┤
+│ Video prompt written      │ Video prompt written AFTER   │
+│ BEFORE seeing image       │ seeing ACTUAL image          │
+├──────────────────────────┼──────────────────────────────┤
+│ Prompt assumes planned    │ Prompt describes what's      │
+│ pose/expression           │ ACTUALLY in the image        │
+├──────────────────────────┼──────────────────────────────┤
+│ Mismatch = bad video      │ Perfect match = good video   │
+├──────────────────────────┼──────────────────────────────┤
+│ Wasted Grok credits on    │ Only generate video when     │
+│ mismatched prompts        │ image is confirmed good      │
+├──────────────────────────┼──────────────────────────────┤
+│ No quality check on image │ AI catches image mistakes    │
+│ before video generation   │ BEFORE video stage           │
+├──────────────────────────┼──────────────────────────────┤
+│ Action scenes fail        │ Action prompts match actual  │
+│ (wrong starting position) │ starting position perfectly  │
+└──────────────────────────┴──────────────────────────────┘
+
+AI CONVERSATION FLOW (how it looks in practice):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AI: "Scene 1, Clip 1.1 — Here's the image prompt:
+     [image prompt with DNA Passport text included]
+     Generate this in Gemini with character ref attached.
+     ⛔ Do NOT attach any environment/anchor images!
+     Show me the result when ready."
+
+User: [attaches generated image] "Image ready"
+
+AI: "Checking... ✅ Lighting matches anchor. ✅ Wide 
+     shot of pass looks correct. ✅ Torches visible.
+     ⚠️ One issue: there are too many soldiers visible 
+     (I see ~20, should be 6-8 for this scene).
+     Here's updated prompt with crowd control fix:
+     [updated image prompt]
+     Regenerate please."
+
+User: [attaches new image] "How about this?"
+
+AI: "✅ Perfect! Soldier count correct, lighting great.
+     Image approved!
+     
+     Here's the video prompt for Clip 1.1:
+     [video prompt based on ACTUAL image]
+     Copy to Grok with this image attached."
+
+User: "Done. Next clip."
+
+AI: "Clip 1.2 — Here's the image prompt:
+     [next image prompt]..."
+
+
+RULE: AI MUST FOLLOW THIS SEQUENCE!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Give image prompt ONLY (no video prompt yet!)
+2. Wait for user to generate and show the image
+3. Analyse image → approve or give fixes
+4. Only AFTER approval → write video prompt
+5. Video prompt based on ACTUAL image, not planned image
+
+⛔ NEVER give image prompt + video prompt in same message!
+⛔ NEVER write video prompt before seeing the actual image!
+⛔ NEVER skip the image analysis/approval step!
+
 
 COMPLETE EXAMPLE: SINGLE CHARACTER DISCOVERY SCENE
 ═══════════════════════════════════════════════════════════════
@@ -1251,6 +1604,20 @@ SHOT PLAN:
 ├───────┼──────────────────┼──────────────────┼─────────────────────────┤
 │⭐ 5   │ MEDIUM CLOSE     │ Discovery        │ ⭐ ANCHOR — Zain + book │
 │  1    │ EXTREME WIDE     │ Establishing     │ Library interior        │
+
+⚠️ NOTE: The above shot plan and examples below use the OLD 
+anchor method (with characters in anchor). The CORRECT method 
+is PURE ENVIRONMENT anchor — no characters, no story objects.
+The ANCHOR row should instead be:
+│⭐ A   │ WIDE             │ Environment DNA  │ ⭐ ANCHOR — library     │
+│       │                  │                  │   interior, lighting,   │
+│       │                  │                  │   NO characters         │
+
+These examples are kept for prompt STRUCTURE reference only.
+When using them, REMOVE all CHARACTER_LOCKS and OBJECT_LOCK 
+sections from the anchor prompt, and generate a pure 
+environment shot instead.
+
 │  2    │ WIDE             │ Approach         │ Zain walking to pedestal│
 │  3    │ MEDIUM WIDE      │ Reaching         │ Zain reaching for book  │
 │  4    │ MEDIUM           │ Touching         │ Hands on book           │

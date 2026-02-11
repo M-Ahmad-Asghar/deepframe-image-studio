@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useApiKeys } from '@/hooks/useApiKeys';
-import { sendChatMessage } from '@/lib/geminiChat';
+import { sendChatMessage, ChatAttachment } from '@/lib/geminiChat';
+import Image from 'next/image';
 import {
   Chat,
   ChatMessage,
@@ -34,6 +35,8 @@ import {
   Plus,
   Menu,
   X,
+  ImageIcon,
+  Paperclip,
 } from 'lucide-react';
 
 export default function DeepframeChatPage() {
@@ -44,6 +47,9 @@ export default function DeepframeChatPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Attachments state
+  const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
 
   // Sidebar state
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,6 +64,7 @@ export default function DeepframeChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   // API Keys from existing system
   const { activeKey, getNextKey, limitKey, hasKeys } = useApiKeys();
@@ -138,6 +145,42 @@ export default function DeepframeChatPage() {
     reader.readAsText(file);
   };
 
+  // Handle image upload for chat
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newAttachments: ChatAttachment[] = [];
+    const maxImages = 5; // Max 5 images at a time
+
+    Array.from(files).slice(0, maxImages - attachments.length).forEach(file => {
+      if (file.type.startsWith('image/')) {
+        newAttachments.push({
+          type: 'image',
+          file,
+          preview: URL.createObjectURL(file),
+        });
+      }
+    });
+
+    setAttachments(prev => [...prev, ...newAttachments].slice(0, maxImages));
+
+    // Reset input
+    if (imageInputRef.current) {
+      imageInputRef.current.value = '';
+    }
+  };
+
+  // Remove attachment
+  const removeAttachment = (index: number) => {
+    setAttachments(prev => {
+      const newAttachments = [...prev];
+      URL.revokeObjectURL(newAttachments[index].preview);
+      newAttachments.splice(index, 1);
+      return newAttachments;
+    });
+  };
+
   // Create new chat
   const handleNewChat = () => {
     const newChat = createNewChat();
@@ -181,7 +224,7 @@ export default function DeepframeChatPage() {
 
   // Send message
   const handleSendMessage = async () => {
-    if (!inputText.trim() || isLoading || !activeChat) return;
+    if ((!inputText.trim() && attachments.length === 0) || isLoading || !activeChat) return;
     if (!isPromptLoaded) {
       setError('DEEPFRAME system not loaded. Please wait or upload a prompt file.');
       return;
@@ -191,12 +234,20 @@ export default function DeepframeChatPage() {
       return;
     }
 
+    // Build message text with attachment info
+    const messageText = attachments.length > 0
+      ? `${inputText.trim() || 'Analyze this image'}${attachments.length > 0 ? ` [${attachments.length} image${attachments.length > 1 ? 's' : ''} attached]` : ''}`
+      : inputText.trim();
+
     const userMessage: ChatMessage = {
       id: generateId(),
       role: 'user',
-      text: inputText.trim(),
+      text: messageText,
       timestamp: new Date(),
     };
+
+    // Store attachments for API call
+    const currentAttachments = [...attachments];
 
     // Update active chat with new message
     const updatedMessages = [...activeChat.messages, userMessage];
@@ -212,6 +263,7 @@ export default function DeepframeChatPage() {
     saveChat(updatedChat);
 
     setInputText('');
+    setAttachments([]); // Clear attachments after sending
     setIsLoading(true);
     setError(null);
 
@@ -237,7 +289,8 @@ export default function DeepframeChatPage() {
         currentKey.key,
         systemPrompt,
         activeChat.messages,
-        userMessage.text
+        inputText.trim() || 'Analyze this image',
+        currentAttachments.length > 0 ? currentAttachments : undefined
       );
 
       if (result.success && result.text) {
@@ -291,6 +344,34 @@ export default function DeepframeChatPage() {
       handleSendMessage();
     }
   };
+
+  // Handle paste for images (Ctrl+V / Cmd+V)
+  const handlePaste = useCallback((e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    const maxImages = 5;
+    const newAttachments: ChatAttachment[] = [];
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.startsWith('image/')) {
+        const file = item.getAsFile();
+        if (file && attachments.length + newAttachments.length < maxImages) {
+          newAttachments.push({
+            type: 'image',
+            file,
+            preview: URL.createObjectURL(file),
+          });
+        }
+      }
+    }
+
+    if (newAttachments.length > 0) {
+      e.preventDefault(); // Prevent pasting image data as text
+      setAttachments(prev => [...prev, ...newAttachments].slice(0, maxImages));
+    }
+  }, [attachments.length]);
 
   // Copy message to clipboard
   const copyToClipboard = async (text: string, id: string) => {
@@ -655,30 +736,92 @@ export default function DeepframeChatPage() {
         {/* Input Area */}
         <div className="sticky bottom-0 bg-[var(--background)] border-t border-[var(--border)] px-4 py-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex gap-3 items-end">
+            {/* Attachment Preview */}
+            {attachments.length > 0 && (
+              <div className="flex gap-2 mb-3 flex-wrap">
+                {attachments.map((attachment, index) => (
+                  <div
+                    key={index}
+                    className="relative group w-20 h-20 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--secondary)]"
+                  >
+                    <img
+                      src={attachment.preview}
+                      alt={`Attachment ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => removeAttachment(index)}
+                      className="absolute top-1 right-1 p-1 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[9px] px-1 py-0.5 truncate">
+                      {attachment.file.name}
+                    </div>
+                  </div>
+                ))}
+                {attachments.length < 5 && (
+                  <button
+                    onClick={() => imageInputRef.current?.click()}
+                    className="w-20 h-20 rounded-lg border-2 border-dashed border-[var(--border)] flex items-center justify-center text-[var(--muted-foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors"
+                  >
+                    <Plus className="w-6 h-6" />
+                  </button>
+                )}
+              </div>
+            )}
+
+            <div className="flex gap-2 items-center">
+              {/* Image Upload Button */}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                ref={imageInputRef}
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              <button
+                onClick={() => imageInputRef.current?.click()}
+                disabled={isLoading || attachments.length >= 5}
+                className={cn(
+                  'p-3 rounded-xl transition-all shrink-0',
+                  !isLoading && attachments.length < 5
+                    ? 'hover:bg-[var(--secondary)] text-[var(--muted-foreground)] hover:text-[var(--primary)]'
+                    : 'opacity-50 cursor-not-allowed'
+                )}
+                title={attachments.length >= 5 ? 'Max 5 images' : 'Attach images'}
+              >
+                <ImageIcon className="w-5 h-5" />
+              </button>
+
               <div className="flex-1 relative">
                 <textarea
                   ref={textareaRef}
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyDown}
+                  onPaste={handlePaste}
                   placeholder={
                     isPromptLoaded
-                      ? 'Type your message... (Shift+Enter for new line)'
+                      ? attachments.length > 0
+                        ? 'Add a message or send images...'
+                        : 'Type your message... (Ctrl+V to paste images)'
                       : 'Loading DEEPFRAME system...'
                   }
                   disabled={!isPromptLoaded || isLoading}
                   rows={1}
-                  className="w-full px-4 py-3 pr-12 bg-[var(--secondary)] border border-[var(--border)] rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-4 py-3 bg-[var(--secondary)] border border-[var(--border)] rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ minHeight: '48px', maxHeight: '150px' }}
                 />
               </div>
+
               <button
                 onClick={handleSendMessage}
-                disabled={!inputText.trim() || isLoading || !isPromptLoaded}
+                disabled={(!inputText.trim() && attachments.length === 0) || isLoading || !isPromptLoaded}
                 className={cn(
-                  'p-3 rounded-xl transition-all',
-                  inputText.trim() && isPromptLoaded && !isLoading
+                  'p-3 rounded-xl transition-all shrink-0',
+                  (inputText.trim() || attachments.length > 0) && isPromptLoaded && !isLoading
                     ? 'bg-[var(--primary)] text-white hover:opacity-90'
                     : 'bg-[var(--secondary)] text-[var(--muted-foreground)] cursor-not-allowed'
                 )}

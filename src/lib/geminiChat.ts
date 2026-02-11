@@ -7,13 +7,35 @@ export interface ChatResponse {
   error?: string;
 }
 
+export interface ChatAttachment {
+  type: 'image';
+  file: File;
+  preview: string;
+}
+
 const CHAT_MODEL = 'gemini-3-pro-preview';
+
+// Helper to convert file to base64
+async function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      // Remove data URL prefix (e.g., "data:image/png;base64,")
+      const base64 = result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 export async function sendChatMessage(
   apiKey: string,
   systemPrompt: string,
   messages: ChatMessage[],
-  userMessage: string
+  userMessage: string,
+  attachments?: ChatAttachment[]
 ): Promise<ChatResponse> {
   try {
     const ai = new GoogleGenAI({ apiKey });
@@ -29,10 +51,31 @@ export async function sendChatMessage(
       });
     }
 
-    // Add the new user message
+    // Build parts for user message (text + images)
+    const userParts: any[] = [];
+
+    // Add images first if any
+    if (attachments && attachments.length > 0) {
+      for (const attachment of attachments) {
+        if (attachment.type === 'image') {
+          const base64 = await fileToBase64(attachment.file);
+          userParts.push({
+            inlineData: {
+              mimeType: attachment.file.type,
+              data: base64,
+            },
+          });
+        }
+      }
+    }
+
+    // Add text message
+    userParts.push({ text: userMessage });
+
+    // Add the new user message with attachments
     contents.push({
       role: 'user',
-      parts: [{ text: userMessage }],
+      parts: userParts,
     });
 
     // Build enhanced system instruction

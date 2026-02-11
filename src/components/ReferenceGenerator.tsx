@@ -2,8 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { generateImage } from '@/lib/gemini';
-import { ReferenceImage, AspectRatio } from '@/types';
+import { ReferenceImage, AspectRatio, ImageSize } from '@/types';
 import { generateId as genId } from '@/lib/utils';
+import { ImagePreview } from './ImagePreview';
 
 interface ReferenceItem {
   id: string;
@@ -37,6 +38,8 @@ export default function ReferenceGenerator({ apiKey }: ReferenceGeneratorProps) 
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentGenerating, setCurrentGenerating] = useState<string | null>(null);
   const [aspectRatio, setAspectRatio] = useState('1:1');
+  const [imageSize, setImageSize] = useState<ImageSize>('2K');
+  const [previewImage, setPreviewImage] = useState<{ url: string; prompt?: string } | null>(null);
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const generateId = () => Math.random().toString(36).substr(2, 9);
@@ -152,7 +155,7 @@ export default function ReferenceGenerator({ apiKey }: ReferenceGeneratorProps) 
         prompt: item.prompt,
         referenceImages: referenceImages,
         aspectRatio: aspectRatio as AspectRatio,
-        imageSize: '2K',
+        imageSize: imageSize,
       });
 
       if (result.success && result.images && result.images.length > 0) {
@@ -282,21 +285,48 @@ export default function ReferenceGenerator({ apiKey }: ReferenceGeneratorProps) 
 
   return (
     <div className="space-y-6">
-      {/* Aspect Ratio Selection */}
-      <div className="flex items-center gap-4">
-        <label className="text-sm font-medium text-gray-300">Aspect Ratio:</label>
-        <select
-          value={aspectRatio}
-          onChange={(e) => setAspectRatio(e.target.value)}
-          className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-        >
-          <option value="free">Free (Auto)</option>
-          <option value="1:1">1:1 (Square)</option>
-          <option value="16:9">16:9 (Landscape)</option>
-          <option value="9:16">9:16 (Portrait)</option>
-          <option value="4:3">4:3</option>
-          <option value="3:4">3:4</option>
-        </select>
+      {/* Aspect Ratio & Size Selection */}
+      <div className="flex items-center gap-6 flex-wrap">
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium text-gray-300">Aspect Ratio:</label>
+          <select
+            value={aspectRatio}
+            onChange={(e) => setAspectRatio(e.target.value)}
+            className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="free">Free (Auto)</option>
+            <option value="1:1">1:1 (Square)</option>
+            <option value="16:9">16:9 (Landscape)</option>
+            <option value="9:16">9:16 (Portrait)</option>
+            <option value="4:3">4:3</option>
+            <option value="3:4">3:4</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium text-gray-300">Size:</label>
+          <div className="flex gap-1">
+            <button
+              onClick={() => setImageSize('1K')}
+              className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                imageSize === '1K'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10'
+              }`}
+            >
+              1K
+            </button>
+            <button
+              onClick={() => setImageSize('2K')}
+              className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                imageSize === '2K'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10'
+              }`}
+            >
+              2K
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Categories */}
@@ -402,7 +432,16 @@ export default function ReferenceGenerator({ apiKey }: ReferenceGeneratorProps) 
 
                     {/* Generated Image / Status */}
                     <div className="flex-shrink-0">
-                      <div className="w-20 h-20 bg-white/10 rounded-lg flex items-center justify-center overflow-hidden">
+                      <div
+                        className={`w-20 h-20 bg-white/10 rounded-lg flex items-center justify-center overflow-hidden ${
+                          item.generatedImage ? 'cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all' : ''
+                        }`}
+                        onClick={() => {
+                          if (item.generatedImage) {
+                            setPreviewImage({ url: item.generatedImage, prompt: item.prompt });
+                          }
+                        }}
+                      >
                         {item.status === 'generating' ? (
                           <div className="animate-spin w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full" />
                         ) : item.generatedImage ? (
@@ -497,6 +536,15 @@ export default function ReferenceGenerator({ apiKey }: ReferenceGeneratorProps) 
           </button>
         )}
       </div>
+
+      {/* Image Preview Modal */}
+      {previewImage && (
+        <ImagePreview
+          imageUrl={previewImage.url}
+          prompt={previewImage.prompt}
+          onClose={() => setPreviewImage(null)}
+        />
+      )}
     </div>
   );
 }

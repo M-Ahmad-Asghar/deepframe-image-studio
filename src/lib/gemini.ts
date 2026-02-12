@@ -31,7 +31,7 @@ function buildOverviewText(refs: ReferenceImage[]): string {
 
   // Anchors last
   for (const ref of anchorRefs) {
-    overview += `- Image ${imageNum}: STYLE/ENVIRONMENT REFERENCE (anchor) → Match ONLY environment type, lighting direction, color grading. DO NOT copy this image. Generate COMPLETELY DIFFERENT composition.\n`;
+    overview += `- Image ${imageNum}: STYLE/ENVIRONMENT REFERENCE (anchor) → Extract ONLY: environment type, lighting mood, color palette. Create a COMPLETELY NEW scene inspired by this style.\n`;
     imageNum++;
   }
 
@@ -42,7 +42,7 @@ function buildOverviewText(refs: ReferenceImage[]): string {
   }
 
   if (anchorRefs.length > 0) {
-    overview += `- ANCHOR/STYLE reference must NOT be copied. New composition, new camera angle.\n`;
+    overview += `- ⚠️ CRITICAL FOR STYLE/ANCHOR: This is NOT a background image. DO NOT place characters inside this image. DO NOT use it as a backdrop. DO NOT composite or blend. Create a FRESH scene that only shares the MOOD and STYLE.\n`;
   }
 
   overview += `- Output must be PHOTOREALISTIC. Not illustration, not cartoon, not oil painting, not digital art.\n`;
@@ -62,7 +62,26 @@ This person's face, jawline, nose, eyes, eyebrows, skin tone, facial hair style,
 
     case 'anchor':
       return `[IMAGE ${index} of ${total}] — STYLE/ENVIRONMENT REFERENCE (ANCHOR)
-⚠️ DO NOT reproduce this image. DO NOT copy its composition. ONLY extract: environment type, lighting direction and quality, color grading, contrast level. Generate a COMPLETELY NEW and DIFFERENT shot.`;
+
+⚠️⚠️⚠️ CRITICAL - READ CAREFULLY ⚠️⚠️⚠️
+This image is ONLY for style inspiration. You must:
+
+✅ DO extract from this image:
+- Type of environment (indoor/outdoor, room type, location type)
+- Lighting mood and direction (soft, dramatic, natural, etc.)
+- Color palette and grading
+- Overall aesthetic vibe
+- Camera framing style (wide, medium, close-up)
+
+❌ DO NOT do these things:
+- DO NOT use this as a background image
+- DO NOT place characters INTO this image
+- DO NOT composite or blend this with character references
+- DO NOT recreate this exact scene
+- DO NOT copy walls, furniture, or specific elements from this image
+- This is NOT a backdrop - treat it as STYLE GUIDE ONLY
+
+CORRECT APPROACH: If this shows a cozy room with warm lighting, create a DIFFERENT cozy room with similar warm lighting mood. If character refs are provided, put them in the NEW scene you create.`;
 
     case 'object':
       return `[IMAGE ${index} of ${total}] — OBJECT REFERENCE: "${name}"
@@ -96,8 +115,9 @@ FINAL REMINDERS:
   }
 
   if (hasAnchor) {
-    instruction += `- This must be a NEW image. NOT a copy of the anchor/style reference.
-- Camera angle and composition must be DIFFERENT from the anchor.
+    instruction += `- ⚠️ STYLE REFERENCE WARNING: The anchor/style image is NOT a background. You must CREATE a new environment inspired by its mood, NOT place characters inside that image.
+- Generate a FRESH scene. Different room, different composition, different camera angle.
+- If it looks like the style image with characters pasted in, you have done it WRONG.
 `;
   }
 

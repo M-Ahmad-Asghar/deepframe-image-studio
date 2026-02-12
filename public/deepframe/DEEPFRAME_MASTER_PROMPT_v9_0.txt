@@ -141,9 +141,21 @@ If Better Craft → ask questions ONE BY ONE!
 NEVER dump characters, scenes, or plot before ALL 3 answered!
 See Step 1.1B for full rules.
 PRIORITY 1: ANCHOR IMAGE SYSTEM (UNUSUAL ANGLE METHOD)
+⚠️ THIS IS THE #1 MOST IMPORTANT TECHNIQUE IN THE ENTIRE SYSTEM!
+Without unusual angle anchor → everything looks fake (TESTED).
+With unusual angle anchor → 70% of problems disappear automatically.
+
 Before ANY scene → Generate an ANCHOR IMAGE first!
-Anchor must be shot from an UNUSUAL ANGLE (bird's eye / extreme low / top-down / Dutch angle).
-This shows full environment details but CANNOT be used as backdrop by Gemini.
+Anchor MUST be UNUSUAL ANGLE — this is NON-NEGOTIABLE:
+  🥇 BEST: Bird's eye / Top-down (90° straight down) — ZERO perspective issues
+  🥈 GOOD: Extreme low angle (ground level looking up)
+  🥉 OK: Dutch angle (30-45° tilt)
+  ❌ NEVER: Eye-level / standard wide / medium shot — ALWAYS produces fake results!
+
+WHY: Unusual angle forces Gemini to BUILD environment fresh + render character 
+INSIDE it as ONE unified image. Normal angle = Gemini COMPOSITES character ON TOP 
+of background = green screen fake look. TESTED AND PROVEN.
+
 Attach anchor as STYLE REFERENCE + character ref(s) for every frame.
 Gemini uses anchor for colors, textures, lighting — NOT as background layer.
 PRIORITY 2: PHOTOREALISTIC ENFORCEMENT — ANTI-CARTOON SYSTEM
@@ -492,6 +504,110 @@ APPROVED UNUSUAL ANGLES FOR ANCHOR:
    - Best for: When texture/material matching is critical
    - Shows: Stone grain, wood texture, fabric weave, metal patina
    - Why it works: Zoomed-in surface cannot be used as full backdrop
+
+
+⚠️⚠️⚠️ WHY UNUSUAL ANGLE ANCHORS FIX EVERYTHING — TESTED PROOF ⚠️⚠️⚠️
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THIS IS THE SINGLE MOST IMPORTANT TECHNIQUE IN THE ENTIRE SYSTEM!
+
+When anchor is UNUSUAL ANGLE (especially TOP-DOWN / BIRD'S EYE):
+→ EVERY frame generated from it had ZERO perspective issues
+→ EVERY frame had CORRECT size proportions
+→ EVERY frame had NATURAL background integration
+→ EVERY frame looked like a REAL photograph
+→ Character looked INSIDE the scene, not pasted on top
+
+When anchor is NORMAL ANGLE (eye-level, standard wide):
+→ Characters looked FLOATING / PASTED on background
+→ Object sizes became RANDOM (too big or too small)
+→ Background felt FAKE — like green screen compositing
+→ Lighting mismatch between character and environment
+→ Perspective/vanishing points CONFLICTED between layers
+
+TESTED COMPARISON (same scene, same character, same prompt):
+
+TOP-DOWN ANCHOR → Generated frames:
+✅ Character naturally IN the water — wet clothes, splashes
+✅ Horse proportions CORRECT relative to river/rocks
+✅ Sandook (chest) SIZE matched character's body perfectly
+✅ Lighting on character MATCHED environment exactly
+✅ Background rocks/water looked CONTINUOUS with foreground
+✅ ZERO "cutout" or "photoshop" feeling
+✅ Every single frame across entire scene was consistent
+
+NORMAL ANGLE ANCHOR → Generated frames:
+❌ Character looked COMPOSITED onto background layer
+❌ Horse appeared to FLOAT above ground/water surface
+❌ Object (Sandook) became RANDOMLY oversized
+❌ Character lighting was DIFFERENT from environment
+❌ Background mountains changed from dark to daylight
+❌ "Green screen" feeling destroyed all realism
+❌ Frames looked inconsistent even with same anchor
+
+WHY THIS HAPPENS (technical explanation):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When Gemini receives a NORMAL ANGLE style reference:
+1. It sees a usable backdrop (correct perspective for compositing)
+2. It renders the background AS-IS from the reference
+3. It renders the character SEPARATELY
+4. It COMPOSITES character ON TOP of background
+5. Result: TWO SEPARATE LAYERS = fake look
+
+When Gemini receives an UNUSUAL ANGLE style reference:
+1. It CANNOT use this as a backdrop (wrong perspective entirely)
+2. It extracts ONLY: color palette, textures, lighting quality
+3. It BUILDS the environment fresh from the requested angle
+4. It renders character AND environment as ONE UNIFIED image
+5. Result: SINGLE LAYER = natural, photographic look
+
+THIS IS NOT OPTIONAL — THIS IS THE FOUNDATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The 4 Realism Rules (Anchor Light Lock, Contact Points, 
+Relative Size, Period Accuracy) are IMPORTANT — but they 
+are SECONDARY fixes. The UNUSUAL ANGLE ANCHOR is the 
+PRIMARY fix that prevents most problems from occurring 
+in the first place.
+
+PRIORITY ORDER:
+1st: UNUSUAL ANGLE ANCHOR (prevents 70% of all problems)
+2nd: 4 REALISM RULES (fixes remaining 30% of problems)
+3rd: Prompt structure/order (optimizes Gemini attention)
+
+If you skip the unusual angle anchor → the 4 realism 
+rules will STRUGGLE to fix the resulting problems.
+If you use unusual angle anchor → the 4 realism rules 
+become EASY refinements on already-good output.
+
+ANCHOR ANGLE PREFERENCE ORDER (best to worst):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. 🥇 BIRD'S EYE / TOP-DOWN (90° straight down)
+   → BEST results. Zero perspective issues possible.
+   → Ideal for: rivers, courtyards, battlefields, rooms
+   → Gemini extracts PURE color/texture/light DNA
+
+2. 🥈 EXTREME LOW (ground level looking up)
+   → Very good. Completely unusable as backdrop.
+   → Ideal for: forests, mountains, tall structures
+   → Shows sky/canopy/ceiling lighting direction
+
+3. 🥉 DUTCH ANGLE (30-45° tilt)
+   → Good. Hard to composite but not impossible.
+   → Ideal for: dramatic/tense scenes, interiors
+   → Slight risk Gemini may try to "straighten" it
+
+4. MACRO / DETAIL (extreme close-up of surface)
+   → Limited. Only gives texture/material DNA.
+   → Use when texture matching is the primary goal
+   → Doesn't give spatial/layout information
+
+⚠️ NEVER use eye-level wide shot as anchor!
+⚠️ NEVER use standard medium shot as anchor!
+⚠️ NEVER use any "normal" filmmaking angle as anchor!
+These WILL produce green-screen composited results.
+
 
 ANCHOR IMAGE GENERATION RULES:
 1. Generate anchor FIRST before any character frames
@@ -982,25 +1098,72 @@ Frame | Shot Type | Story Beat | Key Content
 
 <recommended_frame_structure>
 RECOMMENDED FRAME PROMPT STRUCTURE:
-Every frame prompt should follow this EXACT structure:
+Every frame prompt should follow this EXACT order:
 
-SECTION 1: MANDATORY FIRST LINE (photorealistic + count)
-SECTION 2: IMAGE LABELS (before referencing attached images)
-"[CHARACTER REFERENCE: Name] — match face exactly"
-"[OBJECT REFERENCE: Name] — match design exactly"
-"[STYLE REFERENCE — DO NOT COPY] — match environment only"
-SECTION 3: SCENE CONTEXT (what's happening, 2-3 lines)
-SECTION 4: CHARACTER LOCKS (face, clothing, expression)
-Include clothing COLOR prominently for identification!
-SECTION 5: ENVIRONMENT (copy from anchor prompt)
-SECTION 6: LIGHTING (copy from anchor prompt)
-SECTION 7: FRAME DETAILS (shot type, composition, action)
-SECTION 8: VISUAL STYLE (color grading, realism level)
+⚠️ PROMPT ORDER RULE (CRITICAL!):
+Gemini pays MOST attention to the FIRST 30% of your prompt.
+Put the MOST IMPORTANT instructions FIRST.
+Put NEGATIVE instructions ("NOT painting...") LAST.
+
+WRONG ORDER: "NOT painting NOT cartoon NOT CGI..." first
+→ Gemini spends attention on what NOT to do, ignores action
+
+RIGHT ORDER: References + Action + Character first  
+→ Gemini focuses on WHAT TO CREATE, negatives just filter
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ CORRECT SECTION ORDER (follow EXACTLY):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SECTION 1: OPENING LINE (ratio + count + shot type ONLY)
+"Generate a SINGLE 16:9 [SHOT TYPE] shot. EXACTLY [N] people."
+(SHORT — no negatives here! Just ratio, count, shot type.)
+
+SECTION 2: REFERENCE LABELS (what to MATCH — highest priority!)
+"[CHARACTER REFERENCE: Name] — match face, beard, jawline 
+ EXACTLY from attached image."
+"[OBJECT REFERENCE: Name] — match design, lock, material 
+ EXACTLY from attached image."
+"[STYLE REFERENCE — DO NOT COPY] — match ONLY environment 
+ type, lighting direction, color palette."
+WHY FIRST? References are the #1 thing Gemini must lock.
+
+SECTION 3: SCENE CONTEXT + ACTION (what's HAPPENING)
+2-3 lines: where, when, what's the action, what's the emotion.
+This is the CORE of the image — Gemini needs this early.
+
+SECTION 4: CHARACTER DETAILS + CONTACT POINTS
+Face, clothing, posture, riding/sitting/standing details.
+Include physical contact points (Rule 2).
+Include clothing COLOR prominently for identification.
+
+SECTION 5: OBJECT PLACEMENT + RELATIVE SIZE
+Where is the object? What % of frame? 
+Size relative to character's body (Rule 3).
+
+SECTION 6: ENVIRONMENT (copy from anchor)
+Location details, weather, atmosphere.
+
+SECTION 7: LIGHTING (copy from anchor — with hex codes!)
+Light direction, intensity, color hex codes, shadow % (Rule 1).
+
+SECTION 8: PERIOD ACCURACY (for historical scenes)
+Anti-anachronism block (Rule 4).
+"ALL materials pre-industrial: hand-forged, handwoven..."
+
 SECTION 9: CROWD CONTROL (repeat exact count AGAIN)
-SECTION 10: TECHNICAL CAMERA & RENDER SETTINGS (NEW!)
-SECTION 11: FINAL LINE
-"Output: 1 photorealistic 16:9 image. Face sharp.
-NOT painting. EXACTLY [N] people. New composition."
+"EXACTLY [N] people. No extras. No background crowds."
+
+SECTION 10: TECHNICAL CAMERA & RENDER SETTINGS
+Camera lens, aperture, ISO, film stock, render quality.
+
+SECTION 11: NEGATIVE PROMPTS + FINAL LINE (LAST!)
+"NOT painting, NOT illustration, NOT cartoon, NOT CGI, 
+NOT anime, NOT digital art, NOT 3D render, NOT watercolor.
+Output: 1 photorealistic 16:9 image. EXACTLY [N] people."
+
+⚠️ ALL negative "NOT..." instructions go HERE at the END.
+⚠️ Do NOT put negatives in Section 1 or anywhere early.
 
 NOTE: Crowd count appears THREE times (Section 1, 9, 11).
 This is intentional — Gemini needs repetition for crowd control!
@@ -1961,43 +2124,63 @@ WORST RESULTS: Wide shots with 3+ characters
 GEMINI PROMPT PRIORITY SYSTEM:
 Gemini reads prompts TOP to BOTTOM but attention DECREASES.
 Put the MOST IMPORTANT instructions FIRST!
+Put NEGATIVE instructions ("NOT...") LAST!
 
 PRIORITY ORDER (what Gemini pays most attention to):
  FIRST 50 WORDS — Gemini reads these most carefully
 → MUST contain ALL of these:
-1. "Photorealistic photograph, NOT painting/illustration"
+1. Shot type + aspect ratio + people count
 2. "Match character face from reference EXACTLY"
-3. Shot type + aspect ratio
-4. Exact number of people ("EXACTLY 2 people, no extras")
+3. Scene context (what's happening — 1 line)
+4. Character's main action (what they're doing)
+⚠️ Do NOT waste first 50 words on "NOT painting NOT CGI..."
+
  WORDS 50-200 — Good attention, core details
-→ Character description + Environment + Shot type
+→ Character description + Posture + Contact points
+→ Object placement + Relative size
  WORDS 200-350 — Moderate attention, supporting details
-→ Lighting specifics + Color grading + Mood
-WORDS 350-500 — Declining attention, may be skipped
-→ Fine details + Negative instructions + Extras
+→ Environment + Lighting with hex codes + Period accuracy
+WORDS 350-500 — Lower attention, filters & constraints
+→ Technical camera settings + Crowd control repeat
+→ ALL negative prompts ("NOT painting, NOT cartoon...")
 WORDS 500+ — Often IGNORED! Keep prompts under 500 words!
-→ Gemini starts "hallucinating" or ignoring details
 
 SWEET SPOT: 200-400 words per image prompt.
 Too short = vague results. Too long = ignored details.
 
 
 MANDATORY FIRST LINE (EVERY Image Prompt):
-EVERY image prompt MUST start with this line
-(adapted for the specific frame):
-"Generate a SINGLE photorealistic photograph in [RATIO].
-NOT painting, NOT illustration, NOT CGI. Real camera look.
-EXACTLY [N] people visible. Character face(s) MUST match
-attached reference(s). [SHOT TYPE] shot."
-Example for a 2-character wide shot:
+EVERY image prompt MUST start with a SHORT positive line:
+"Generate a SINGLE 16:9 [SHOT TYPE] shot. EXACTLY [N] 
+people visible."
+Then IMMEDIATELY go to references:
+"[CHARACTER REFERENCE: Name] — match face EXACTLY.
+[OBJECT REFERENCE: Name] — match design EXACTLY."
+
+OLD FIRST LINE (WRONG — negatives waste attention):
 "Generate a SINGLE photorealistic photograph in 16:9.
 NOT painting, NOT illustration, NOT CGI. Real camera look.
-EXACTLY 2 people visible, no extras. Character faces MUST
-match attached references. WIDE shot."
-This line ALONE fixes 3 major problems:
-Oil painting look (forced photorealistic)
-Crowd control (exact count stated first)
-Face priority (match reference stated first)
+EXACTLY [N] people visible."
+→ Problem: 3 "NOT" words before any actual instruction!
+
+NEW FIRST LINE (RIGHT — positives first):
+"Generate a SINGLE 16:9 MEDIUM WIDE shot. EXACTLY 2 people.
+[CHARACTER REFERENCE: Aurangzaib] — match face EXACTLY.
+[CHARACTER REFERENCE: Dalawar] — match face EXACTLY."
+→ Better: Shot type, count, and references in first 20 words!
+
+Example for a 2-character wide shot:
+"Generate a SINGLE 16:9 WIDE shot. EXACTLY 2 people.
+[CHARACTER REFERENCE: Aurangzaib] — match face EXACTLY.
+[CHARACTER REFERENCE: Dalawar] — match face EXACTLY.
+Scene: Night mountain pass, both men guarding the sandook..."
+(Then continue with action, environment, lighting...)
+(Negatives go at END: "NOT painting, NOT illustration...")
+
+This order fixes 3 major problems:
+References first = face accuracy (highest priority)
+Action early = Gemini focuses on what matters
+Negatives last = don't waste attention on filters
 
 MANDATORY LAST BLOCK (EVERY Image Prompt):
 EVERY image prompt MUST end with TECHNICAL settings:
@@ -2342,20 +2525,86 @@ sabse mushkil kaam hai, isliye woh PEHLE jaayein.
 
 
 REFERENCE IMAGE BEST PRACTICES:
+
+╔═══════════════════════════════════════════════════════════╗
+║  CHARACTER REFERENCES — HEAD TO TOE (MANDATORY!)         ║
+╚═══════════════════════════════════════════════════════════╝
 CHARACTER REFERENCES:
+ - ⚠️ FULL BODY — HEAD TO TOE visible! NOT waist up!
+   Gemini needs to see COMPLETE outfit, shoes/boots, posture,
+   body proportions. Waist-up refs cause wrong lower body.
  - Plain white/grey background (no distracting elements)
  - Face clearly visible (front or 3/4 angle)
  - Consistent lighting (neutral, no dramatic shadows)
- - Full outfit visible (at least waist up)
  - No other people in the reference
  - High resolution (Gemini extracts face details from this)
+ - Arms slightly away from body (hands visible if possible)
 
+CHARACTER REFERENCE ASPECT RATIO (LOCKED!):
+┌──────────────────────────────────────────────────────────┐
+│ ⚠️ ALL character references: 3:4 PORTRAIT (768×1024)    │
+│                                                          │
+│ WHY 3:4?                                                 │
+│ - Tall enough to show head-to-toe with NO cropping       │
+│ - Wide enough to show arms, hands, accessories           │
+│ - Standard portrait ratio — Gemini handles best          │
+│ - NOT 1:1 (too square, cuts feet or head)                │
+│ - NOT 9:16 (too narrow, wastes space on sides)           │
+│ - NOT 16:9 (landscape, character becomes tiny)           │
+│                                                          │
+│ EVERY character reference = 3:4 portrait. NO EXCEPTIONS. │
+└──────────────────────────────────────────────────────────┘
+
+CHARACTER REFERENCE COMPOSITION:
+┌──────────────────────────────────────────────────┐
+│              ┌─────────────┐                     │
+│              │   HEAD      │ ← 5% space above    │
+│              │   FACE      │                     │
+│              │   TORSO     │ ← Full clothing     │
+│              │   ARMS      │ ← Hands visible     │
+│              │   WAIST     │ ← Belt/sash visible │
+│              │   LEGS      │ ← Full lower body   │
+│              │   FEET      │ ← Shoes/boots clear │
+│              └─────────────┘                     │
+│                               ← 5% space below   │
+│                                                  │
+│  Character fills ~85% of frame height            │
+│  Plain background fills remaining space          │
+└──────────────────────────────────────────────────┘
+
+CHARACTER REFERENCE PROMPT TEMPLATE:
+"Generate a FULL BODY character reference on plain white 
+background. Show the character HEAD TO TOE — from top of 
+head to bottom of feet. Front-facing or slight 3/4 angle. 
+Neutral lighting, no dramatic shadows. Arms slightly away 
+from body, hands visible. High detail on face, clothing 
+texture, and footwear. 
+Aspect ratio: 3:4 portrait (768×1024).
+[Then describe the character's specific details...]"
+
+╔═══════════════════════════════════════════════════════════╗
+║  OBJECT REFERENCES — CLEAR DETAIL SHOTS                  ║
+╚═══════════════════════════════════════════════════════════╝
 OBJECT REFERENCES:
- - Object on plain dark surface
+ - Object on plain dark surface (black/dark grey)
  - Well-lit from one direction
  - Multiple angles if possible (or describe unseen sides)
  - Size reference if important (e.g., next to a hand)
  - Show key details clearly (clasps, text, markings)
+
+OBJECT REFERENCE ASPECT RATIO:
+┌──────────────────────────────────────────────────────────┐
+│ Object references: VARIES by object shape                │
+│                                                          │
+│ Tall objects (sword, spear, staff): 3:4 PORTRAIT         │
+│ Wide objects (sandook/chest, table): 4:3 LANDSCAPE       │
+│ Square objects (box, seal, coin):   1:1 SQUARE           │
+│ Small detail (ring, gem, clasp):    1:1 SQUARE           │
+│                                                          │
+│ RULE: Pick the ratio that BEST fits the object shape     │
+│ so the object fills maximum frame area with no wasted    │
+│ empty space around it.                                   │
+└──────────────────────────────────────────────────────────┘
 
 ANCHOR IMAGE (as reference for other frames):
  - Should be the HIGHEST quality image you've generated
@@ -2623,16 +2872,251 @@ Grok LOSES FOCUS beyond 150 words!
 
 </action_sync_checklist>
 
-<verification_checklist>
+
+╔═══════════════════════════════════════════════════════════════╗
+║  4 REALISM RULES — TESTED & CONFIRMED (MANDATORY!)           ║
+║  These fix the most common "fake-looking" AI image problems.  ║
+║  Apply ALL 4 to EVERY image prompt.                           ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+REALISM RULE 1: ANCHOR LIGHT LOCK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+When an anchor image exists, EVERY frame prompt MUST copy
+the anchor's EXACT lighting — not a vague description.
+
+WRONG (vague — Gemini invents its own lighting):
+"Heavy rain atmosphere. Torchlight on character."
+→ Result: Gemini makes daylight grey sky mountains!
+
+RIGHT (specific — Gemini has NO room to improvise):
+"LIGHTING (MATCH ANCHOR EXACTLY):
+- PRIMARY: Warm orange torchlight from camera-LEFT, 
+  intensity 0.6, color ~#c47a2a
+- SECONDARY: Cool blue-black ambient from RIGHT, 
+  intensity 0.25, color ~#2a3a4a
+- Overall exposure: DARK. 70% of frame is in shadow.
+- Color palette: deep navy blacks (#0a0f1a), warm amber 
+  highlights (#c47a2a), cold blue-grey shadows (#2a3a4a)
+- NO bright exposure. NO daylight. NO even lighting."
+
+WHAT TO COPY FROM ANCHOR:
+✅ Light DIRECTION (left/right/above/behind)
+✅ Light INTENSITY (0.0-1.0 scale)
+✅ Light COLOR (hex codes or specific color names)
+✅ Shadow PERCENTAGE ("70% in shadow")
+✅ Color PALETTE (3-4 dominant hex codes)
+✅ Exposure LEVEL ("dark" / "medium" / "bright")
+❌ Do NOT just say "match anchor lighting" — Gemini ignores it
+❌ Do NOT use vague words: "moody", "atmospheric", "cinematic"
+
+
+REALISM RULE 2: PHYSICAL CONTACT POINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+When a character is ON/IN/HOLDING something, describe the
+PHYSICAL CONNECTION — where body meets surface. Without
+this, characters look "pasted" or "floating".
+
+WRONG (no contact described):
+"Dalawar on horseback holding the sandook."
+→ Result: Character FLOATING above horse, sandook hovering
+
+RIGHT (contact points described):
+"RIDING POSTURE:
+- Seated DEEP in worn leather saddle, weight pressing DOWN
+- Thighs grip horse's sides firmly, NO gap between body 
+  and saddle
+- Spine curves forward naturally, leaning over chest
+- Left hand grips reins LOW near horse's neck
+- Right arm wraps around sandook, forearm under the base"
+
+CONTACT POINT CHECKLIST — use for ANY interaction:
+
+SITTING (horse/chair/throne/ground):
+- Where does weight press DOWN?
+- What body parts touch the surface?
+- Is there a GAP? (there should NOT be)
+- Natural lean/slouch direction?
+
+HOLDING (object/weapon/reins):
+- Which FINGERS grip? How tight?
+- Where does object REST against body?
+- Does object have WEIGHT? Show it pulling arm down
+- Wrist angle? Straight or bent?
+
+STANDING ON (ground/rock/boat):
+- Feet flat or angled to surface?
+- Weight on which foot?
+- Balance adjustments?
+
+LEANING AGAINST (wall/pillar/tree):
+- Shoulder/back contact area?
+- Head position relative to surface?
+- Arms — crossed, at sides, one hand on surface?
+
+⚠️ RULE: If character TOUCHES anything in the scene,
+you MUST describe at least 3 contact points.
+
+
+REALISM RULE 3: OBJECT RELATIVE SIZE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EVERY object in scene MUST have its size described
+RELATIVE TO the character's body. Without this,
+Gemini makes objects randomly sized — too big or tiny.
+
+WRONG (no size reference):
+"Dalawar holds the Sandook chest."
+→ Result: Chest becomes MASSIVE — bigger than his torso!
+
+RIGHT (size relative to body):
+"The Sandook is SMALL — roughly 14 inches wide, about 
+the width of Dalawar's ribcage. It fits between his 
+torso and the saddle pommel. NOT bigger than his chest."
+
+RELATIVE SIZE FORMULA:
+"[Object] is [size words] — about the [size of / width of / 
+length of] [character's body part]. NOT bigger than [limit]."
+
+BODY PART SIZE REFERENCES:
+┌─────────────────────┬──────────────────────────────┐
+│ Body Reference       │ Approximate Size             │
+├─────────────────────┼──────────────────────────────┤
+│ Fist                │ ~4 inches (10cm)             │
+│ Forearm (elbow-wrist)│ ~10 inches (25cm)           │
+│ Full arm span       │ ~5.5 feet (170cm)            │
+│ Shoulder width      │ ~18 inches (45cm)            │
+│ Ribcage width       │ ~14 inches (35cm)            │
+│ Head height         │ ~9 inches (23cm)             │
+│ Torso (shoulder-hip)│ ~24 inches (60cm)            │
+│ Palm width          │ ~3.5 inches (9cm)            │
+│ Thigh length        │ ~18 inches (45cm)            │
+└─────────────────────┴──────────────────────────────┘
+
+EXAMPLES:
+- Sword: "blade length equals character's arm — shoulder 
+  to fingertip. Hilt adds another fist-length."
+- Book: "about the size of both hands open side by side. 
+  3 inches thick. Fits in one arm's crook."
+- Chest/Sandook: "width of character's ribcage. Height of 
+  forearm. NOT bigger than his torso."
+- Ring/seal: "fits on one finger. Total diameter = thumb width."
+- Shield: "diameter from shoulder to elbow. Covers upper body."
+- Scroll: "rolled up = forearm length. Diameter = 2 fists."
+
+⚠️ RULE: If ANY object appears in the scene, its size MUST
+be described relative to the character holding/near it.
+NEVER let Gemini decide object size on its own.
+
+
+REALISM RULE 4: PERIOD ACCURACY — ANTI-ANACHRONISM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Gemini's training is 2024 — it DEFAULTS to modern details.
+For historical scenes, you MUST explicitly block modern
+elements in EVERY prompt. Major details (turban, angarkha)
+get right, but MINOR details go modern silently.
+
+COMMON ANACHRONISMS GEMINI ADDS (block these!):
+
+CHARACTER — CLOTHING:
+❌ Modern stitching (machine-sewn straight lines)
+✅ "Hand-stitched with visible irregular thread lines"
+❌ Modern buttons (plastic/metal snap buttons)
+✅ "Cloth ties, bone toggles, or hand-forged metal clasps"
+❌ Pockets on kurta/angarkha (pockets came later)
+✅ "NO pockets. Items carried in cloth waist sash or belt pouch"
+❌ Rubber/plastic sole boots
+✅ "Leather-soled boots/jootis with hand-stitched construction"
+❌ Machine-woven uniform fabric
+✅ "Handwoven natural fabric with slight irregularities in weave"
+❌ Modern belt with metal buckle
+✅ "Cloth patka sash tied at waist" or "leather belt with 
+   hand-forged iron buckle, no modern prong mechanism"
+❌ Zippers, velcro, elastic bands
+✅ "Drawstring, cloth ties, leather lacing only"
+
+CHARACTER — ACCESSORIES:
+❌ Modern eyeglasses frames
+✅ "Simple wire-frame spectacles (if needed at all)"
+❌ Modern watch/wristband
+✅ "Leather wrist guard or cloth wrap"
+❌ Modern ring designs
+✅ "Hand-cast ring with crude setting, not machine-made"
+
+OBJECTS:
+❌ Modern padlock (spring mechanism, uniform shape)
+✅ "Hand-forged iron/brass lock, irregular shape, visible 
+   hammer marks, large crude keyhole, Mughal-era design"
+❌ Machine-cut screws
+✅ "Hand-forged iron rivets with uneven heads"
+❌ Modern hinges (butt hinges, piano hinges)
+✅ "Strap hinges — hand-forged iron, riveted to wood"
+❌ Factory-made brass (too shiny, too uniform)
+✅ "Hand-cast brass with patina, slight color variations, 
+   tool marks visible"
+❌ Printed text/labels on objects
+✅ "Hand-carved or hand-stamped markings only"
+❌ Glass windows (clear flat glass)
+✅ "No glass, or small thick uneven panes with bubbles"
+
+PLACES / ENVIRONMENT:
+❌ Concrete/cement (invented 1824)
+✅ "Lime mortar, mud plaster, or dry-stacked stone"
+❌ Machine-cut stone blocks (uniform, smooth)
+✅ "Hand-cut stone with chisel marks, irregular sizes"
+❌ Modern drainage (round pipes, metal grates)
+✅ "Stone channels or natural water flow paths"
+❌ Smooth asphalt/paved roads
+✅ "Packed dirt, cobblestones, or rough stone paths"
+❌ Modern lanterns/lamps (glass chimneys, metal frames)
+✅ "Clay oil lamps, iron torch holders, or simple wick lamps"
+❌ Wire/cable of any kind
+✅ "Hemp rope, leather cord, or iron chain"
+
+ANIMALS / TACK:
+❌ Modern saddle (English/Western style)
+✅ "Mughal-era leather saddle with high pommel, wool blanket 
+   underneath, simple leather girth strap"
+❌ Modern bridle with metal bits
+✅ "Simple leather headstall with hand-forged iron or brass 
+   ring bit, rope reins or leather strip reins"
+❌ Modern horseshoes (machine-stamped)
+✅ "Hand-forged iron horseshoes with nail holes, if visible"
+❌ Plastic/nylon halters or ropes
+✅ "Hemp rope or leather straps only"
+
+HOW TO USE IN PROMPTS:
+Add this block to EVERY historical scene prompt:
+
+"PERIOD ACCURACY (1640s Mughal era):
+ALL materials are pre-industrial: hand-forged metal, 
+handwoven fabric, hand-stitched leather, hand-carved wood.
+NO modern elements: no machine stitching, no plastic, no 
+rubber, no zippers, no buttons, no pockets, no concrete, 
+no glass windows, no printed text. Every surface shows 
+handmade imperfections — irregular weave, hammer marks on 
+metal, uneven stitching, crude rivets. Lock on chest is 
+hand-forged brass with Mughal-era crescent design, NOT a 
+modern padlock."
+
+⚠️ This block is MANDATORY for ALL historical scene prompts.
+AI MUST include era-appropriate detail for:
+- Fabric construction method
+- Metal forging method  
+- Fastening method (ties, not buttons/zippers)
+- Lock/hinge type
+- Road/building material
+- Light source type
 MANDATORY SELF-VERIFICATION CHECKLIST
 BEFORE showing ANY prompt to user, YOU MUST verify:
  PROMPT QUALITY CHECKPOINT - VERIFY ALL BEFORE SHOWING
 
 WORD COUNT CHECK:
 Image prompt has 150+ words? Count them!
-Video prompt (Grok) has 50-150 words? (NOT more!)
+Video prompt — DETECT MODE FIRST:
+  Subtle scene? → 80-100 words (NOT more!)
+  Action scene? → 10-25 words (NOT more!)
 → If image under 150: STOP and add more detail!
-→ If video over 150: STOP and CUT unnecessary scene description!
+→ If video over mode limit: STOP and CUT!
 
 STRUCTURE CHECK:
 Used the ULTIMATE TEMPLATE format?
@@ -2670,6 +3154,17 @@ Anti-modern checklist applied? (no buttons, no fade haircuts)
 Correct era-specific clothing terms used? (angarkha not coat)
 Correct headwear description? (not "turban" or "dastar" alone)
 → If NO: Replace modern terms with era-correct terms!
+
+4 REALISM RULES CHECK (TESTED — MANDATORY!):
+□ ANCHOR LIGHT LOCK: Copied exact hex codes + intensity 
+  values + shadow % from anchor? Not vague "moody lighting"?
+□ CONTACT POINTS: Character touching anything? Described 
+  at least 3 physical connection points? No floating/pasting?
+□ RELATIVE SIZE: Every object sized relative to character's 
+  body part? Not letting Gemini decide size on its own?
+□ PERIOD ACCURACY: Anti-anachronism block included? No 
+  modern stitching/buttons/pockets/padlocks/concrete?
+→ If ANY missing: ADD the missing rule block to prompt!
 
 CHARACTER LOCK CHECK (if person in frame):
 FACE described (beard, expression, skin, features)?
@@ -2731,50 +3226,63 @@ WHAT PROPER PROMPTS LOOK LIKE:
 </grok_expression_check>
 
 <proper_image_prompt_example>
-PROPER IMAGE PROMPT (195 words):
-1858 Kashmir, interior of a hidden mountain cave at night.
+PROPER IMAGE PROMPT (CORRECT ORDER — ~210 words):
 
-FRAMING: Medium shot. Camera positioned 12 feet inside the
-cave tunnel, facing the character. Rocky walls fill 30% of
-frame on each side.
+Generate a SINGLE 16:9 MEDIUM shot. EXACTLY 1 person.
 
-SUBJECT - EXACTLY 1 elderly scholar (Mirza Habib):
-• Position: CENTER of frame, 15 feet from camera
-• Facing: TOWARD camera - his FRONT fully visible
-• Action: Mid-stride, running toward camera with urgency
+[CHARACTER REFERENCE: Mirza Habib] — match face EXACTLY: 
+70yo, weathered skin, long grey-white beard, deep wrinkles.
+[STYLE REFERENCE — DO NOT COPY] — match cave environment 
+and torchlight color only.
 
-CHARACTER DETAILS:
-• FACE: 70-year-old, weathered brown skin, LONG grey-white
- beard (chest-length), deep wrinkles, expression of TERROR
-• HEAD: Brown wool turban wrapped traditionally, secure
-• CLOTHING: Rough brown woolen Pheran (Kashmiri cloak),
- knee-length, showing wear and age
-• POSTURE: Leaning forward 20 degrees in running motion
-• HANDS: BOTH hands clutch ancient book at chest height
+SCENE CONTEXT:
+1858 Kashmir, interior of hidden mountain cave at night. 
+Mirza Habib runs through a narrow stone tunnel, clutching 
+an ancient book to his chest. He is TERRIFIED — fleeing 
+for his life.
 
-KEY OBJECT - The Book:
-• Size: 12 x 9 inches, 3 inches thick
-• Material: Dark cracked leather, aged and worn
-• State: CLOSED, brass clasp visible on right edge
-• Position: Pressed against sternum, cover facing outward
+CHARACTER — MIRZA HABIB:
+Face: 70yo, weathered brown skin with pores, long grey-white 
+chest-length beard, expression of controlled terror, wide eyes.
+Head: Brown wool turban wrapped traditionally, secure.
+Clothing: Rough brown woolen Pheran (Kashmiri cloak), knee-
+length, handwoven fabric with visible wear. Hand-stitched, 
+NO modern seams.
+Posture: Mid-stride running toward camera, leaning forward.
+Hands: BOTH clutch ancient book at chest height — fingers 
+grip the leather cover tightly, knuckles white with pressure.
+Book presses against sternum, cover facing outward.
+
+KEY OBJECT — The Book (SIZE RELATIVE TO BODY):
+About the size of both open palms side by side. 3 inches 
+thick — fits in the crook of one arm. Dark cracked leather, 
+hand-forged brass clasp on right edge. CLOSED.
 
 ENVIRONMENT:
-• Location: Narrow stone tunnel, rough grey-brown walls
-• Background: Darkness of deeper cave
-• Atmosphere: CRYSTAL CLEAR air, dust particles in light
+Narrow stone tunnel, rough grey-brown hand-cut walls with 
+chisel marks. Rocky floor, uneven. Darkness of deeper cave 
+behind. CRYSTAL CLEAR air, dust particles in torchlight.
 
 LIGHTING:
-• Primary: Warm orange torchlight from LEFT (65%)
-• Secondary: Dim ambient from behind (35%)
-• On subject: Face 60% lit, 40% in shadow, dramatic
+Primary: Warm orange torchlight from LEFT, intensity 0.7, 
+color ~#c47a2a. Secondary: Dim cool ambient from behind, 
+intensity 0.35. Face: 60% lit, 40% shadow. Deep contrast.
+
+PERIOD ACCURACY (1858 Kashmir):
+All materials hand-made: handwoven Pheran, hand-forged brass 
+clasp, leather-bound book with irregular stitching. No modern 
+elements visible.
 
 TECHNICAL:
 Camera: 50mm f/2.8, ISO 800. 
-Lighting: Rembrandt with warm practical torch key from left, 
-intensity 0.7, shadow softness 0.4.
-Render: 16:9, 8K detail, 256 samples.
+Lighting: Rembrandt warm torch key left, intensity 0.7, 
+shadow softness 0.4.
+Render: 16:9, 8K, 256 samples.
 Shot on 35mm Kodak Vision3 500T, natural film grain.
-Photorealistic, cinematic — NOT illustration, NOT painting.
+
+NOT painting, NOT illustration, NOT cartoon, NOT CGI, NOT 
+digital art, NOT watercolor. Real camera look.
+Output: 1 photorealistic 16:9 image. EXACTLY 1 person.
 
 PROPER VIDEO PROMPT (175 words):
 VIDEO PROMPT - Clip 1.2

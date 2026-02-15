@@ -3,19 +3,19 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useApiKeys } from '@/hooks/useApiKeys';
 import { sendChatMessage, ChatAttachment } from '@/lib/geminiChat';
-import Image from 'next/image';
 import {
   Chat,
   ChatMessage,
-  getAllChats,
-  saveChat,
-  deleteChat,
-  createNewChat,
-  getActiveChatId,
-  setActiveChatId,
   generateChatTitle,
-  generateId,
 } from '@/lib/chatStorage';
+import {
+  getAllNormalChats,
+  saveNormalChat,
+  deleteNormalChat,
+  createNormalChat,
+  getNormalActiveChatId,
+  setNormalActiveChatId,
+} from '@/lib/normalChatStorage';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
@@ -28,18 +28,18 @@ import {
   Check,
   Loader2,
   AlertCircle,
-  MessageSquare,
+  MessageCircle,
   Bot,
   User,
-  Upload,
   Plus,
   Menu,
   X,
   ImageIcon,
-  Paperclip,
 } from 'lucide-react';
 
-export default function DeepframeChatPage() {
+const generateId = () => Math.random().toString(36).substring(2, 11);
+
+export default function NormalChatPage() {
   // Chat state
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeChat, setActiveChat] = useState<Chat | null>(null);
@@ -54,16 +54,9 @@ export default function DeepframeChatPage() {
   // Sidebar state
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // System prompt state
-  const [systemPrompt, setSystemPrompt] = useState('');
-  const [isPromptLoaded, setIsPromptLoaded] = useState(false);
-  const [promptLineCount, setPromptLineCount] = useState(0);
-  const [promptLoadError, setPromptLoadError] = useState(false);
-
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   // API Keys from existing system
@@ -78,72 +71,26 @@ export default function DeepframeChatPage() {
     scrollToBottom();
   }, [activeChat?.messages, scrollToBottom]);
 
-  // Load master prompt on mount
-  useEffect(() => {
-    const loadMasterPrompt = async () => {
-      try {
-        const response = await fetch('/deepframe/DEEPFRAME_MASTER_PROMPT_v9_0.txt');
-        if (!response.ok) {
-          throw new Error('Failed to fetch master prompt');
-        }
-        const text = await response.text();
-        setSystemPrompt(text);
-        setPromptLineCount(text.split('\n').length);
-        setIsPromptLoaded(true);
-        setPromptLoadError(false);
-      } catch (err) {
-        console.error('Failed to load DEEPFRAME master prompt:', err);
-        setPromptLoadError(true);
-        setIsPromptLoaded(false);
-      }
-    };
-
-    loadMasterPrompt();
-  }, []);
-
   // Load chats from localStorage on mount
   useEffect(() => {
-    const loadedChats = getAllChats();
-    const activeChatId = getActiveChatId();
+    const loadedChats = getAllNormalChats();
+    const activeChatId = getNormalActiveChatId();
 
     if (loadedChats.length === 0) {
-      // No chats exist, create first one
-      const newChat = createNewChat();
+      const newChat = createNormalChat();
       setChats([newChat]);
       setActiveChat(newChat);
-      saveChat(newChat);
-      setActiveChatId(newChat.id);
+      saveNormalChat(newChat);
+      setNormalActiveChatId(newChat.id);
     } else {
       setChats(loadedChats);
-      // Find active chat or use first one
       const active = activeChatId
         ? loadedChats.find(c => c.id === activeChatId) || loadedChats[0]
         : loadedChats[0];
       setActiveChat(active);
-      setActiveChatId(active.id);
+      setNormalActiveChatId(active.id);
     }
   }, []);
-
-  // Handle file upload for custom prompt
-  const handlePromptUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      if (text) {
-        setSystemPrompt(text);
-        setPromptLineCount(text.split('\n').length);
-        setIsPromptLoaded(true);
-        setPromptLoadError(false);
-      }
-    };
-    reader.onerror = () => {
-      setError('Failed to read uploaded file');
-    };
-    reader.readAsText(file);
-  };
 
   // Handle image upload for chat
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,7 +98,7 @@ export default function DeepframeChatPage() {
     if (!files) return;
 
     const newAttachments: ChatAttachment[] = [];
-    const maxImages = 5; // Max 5 images at a time
+    const maxImages = 5;
 
     Array.from(files).slice(0, maxImages - attachments.length).forEach(file => {
       if (file.type.startsWith('image/')) {
@@ -165,7 +112,6 @@ export default function DeepframeChatPage() {
 
     setAttachments(prev => [...prev, ...newAttachments].slice(0, maxImages));
 
-    // Reset input
     if (imageInputRef.current) {
       imageInputRef.current.value = '';
     }
@@ -183,18 +129,18 @@ export default function DeepframeChatPage() {
 
   // Create new chat
   const handleNewChat = () => {
-    const newChat = createNewChat();
+    const newChat = createNormalChat();
     setChats(prev => [newChat, ...prev]);
     setActiveChat(newChat);
-    saveChat(newChat);
-    setActiveChatId(newChat.id);
+    saveNormalChat(newChat);
+    setNormalActiveChatId(newChat.id);
     setSidebarOpen(false);
   };
 
   // Switch to a chat
   const handleSelectChat = (chat: Chat) => {
     setActiveChat(chat);
-    setActiveChatId(chat.id);
+    setNormalActiveChatId(chat.id);
     setSidebarOpen(false);
   };
 
@@ -202,22 +148,20 @@ export default function DeepframeChatPage() {
   const handleDeleteChat = (chatId: string, e: React.MouseEvent) => {
     e.stopPropagation();
 
-    deleteChat(chatId);
+    deleteNormalChat(chatId);
     const updatedChats = chats.filter(c => c.id !== chatId);
 
     if (updatedChats.length === 0) {
-      // No chats left, create new one
-      const newChat = createNewChat();
+      const newChat = createNormalChat();
       setChats([newChat]);
       setActiveChat(newChat);
-      saveChat(newChat);
-      setActiveChatId(newChat.id);
+      saveNormalChat(newChat);
+      setNormalActiveChatId(newChat.id);
     } else {
       setChats(updatedChats);
-      // If deleted active chat, switch to first
       if (activeChat?.id === chatId) {
         setActiveChat(updatedChats[0]);
-        setActiveChatId(updatedChats[0].id);
+        setNormalActiveChatId(updatedChats[0].id);
       }
     }
   };
@@ -225,16 +169,11 @@ export default function DeepframeChatPage() {
   // Send message
   const handleSendMessage = async () => {
     if ((!inputText.trim() && attachments.length === 0) || isLoading || !activeChat) return;
-    if (!isPromptLoaded) {
-      setError('DEEPFRAME system not loaded. Please wait or upload a prompt file.');
-      return;
-    }
     if (!hasKeys) {
       setError('Add your Gemini API key in Settings first');
       return;
     }
 
-    // Build message text with attachment info
     const messageText = attachments.length > 0
       ? `${inputText.trim() || 'Analyze this image'}${attachments.length > 0 ? ` [${attachments.length} image${attachments.length > 1 ? 's' : ''} attached]` : ''}`
       : inputText.trim();
@@ -246,10 +185,8 @@ export default function DeepframeChatPage() {
       timestamp: new Date(),
     };
 
-    // Store attachments for API call
     const currentAttachments = [...attachments];
 
-    // Update active chat with new message
     const updatedMessages = [...activeChat.messages, userMessage];
     const updatedChat: Chat = {
       ...activeChat,
@@ -260,14 +197,13 @@ export default function DeepframeChatPage() {
 
     setActiveChat(updatedChat);
     setChats(prev => prev.map(c => c.id === updatedChat.id ? updatedChat : c));
-    saveChat(updatedChat);
+    saveNormalChat(updatedChat);
 
     setInputText('');
-    setAttachments([]); // Clear attachments after sending
+    setAttachments([]);
     setIsLoading(true);
     setError(null);
 
-    // Get current API key
     let currentKey = activeKey;
     if (!currentKey) {
       currentKey = getNextKey();
@@ -279,7 +215,6 @@ export default function DeepframeChatPage() {
       return;
     }
 
-    // Try to send message, with key rotation on rate limit
     let attempts = 0;
     const maxAttempts = 3;
     let lastError = '';
@@ -287,7 +222,7 @@ export default function DeepframeChatPage() {
     while (attempts < maxAttempts) {
       const result = await sendChatMessage(
         currentKey.key,
-        systemPrompt,
+        '', // No system prompt for normal chat
         activeChat.messages,
         inputText.trim() || 'Analyze this image',
         currentAttachments.length > 0 ? currentAttachments : undefined
@@ -309,12 +244,11 @@ export default function DeepframeChatPage() {
 
         setActiveChat(finalChat);
         setChats(prev => prev.map(c => c.id === finalChat.id ? finalChat : c));
-        saveChat(finalChat);
+        saveNormalChat(finalChat);
         setIsLoading(false);
         return;
       }
 
-      // Handle rate limit - try next key
       if (result.error === 'RATE_LIMITED') {
         limitKey(currentKey.id);
         currentKey = getNextKey();
@@ -326,7 +260,6 @@ export default function DeepframeChatPage() {
         attempts++;
         lastError = 'Rate limited, trying next key...';
       } else {
-        // Other error
         setError(result.error || 'Failed to get response');
         setIsLoading(false);
         return;
@@ -345,7 +278,7 @@ export default function DeepframeChatPage() {
     }
   };
 
-  // Handle paste for images (Ctrl+V / Cmd+V)
+  // Handle paste for images
   const handlePaste = useCallback((e: React.ClipboardEvent) => {
     const items = e.clipboardData?.items;
     if (!items) return;
@@ -368,7 +301,7 @@ export default function DeepframeChatPage() {
     }
 
     if (newAttachments.length > 0) {
-      e.preventDefault(); // Prevent pasting image data as text
+      e.preventDefault();
       setAttachments(prev => [...prev, ...newAttachments].slice(0, maxImages));
     }
   }, [attachments.length]);
@@ -381,21 +314,6 @@ export default function DeepframeChatPage() {
       setTimeout(() => setCopiedId(null), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
-    }
-  };
-
-  // Retry loading master prompt
-  const retryLoadPrompt = async () => {
-    setPromptLoadError(false);
-    try {
-      const response = await fetch('/deepframe/DEEPFRAME_MASTER_PROMPT_v9_0.txt');
-      if (!response.ok) throw new Error('Failed to fetch');
-      const text = await response.text();
-      setSystemPrompt(text);
-      setPromptLineCount(text.split('\n').length);
-      setIsPromptLoaded(true);
-    } catch {
-      setPromptLoadError(true);
     }
   };
 
@@ -427,10 +345,10 @@ export default function DeepframeChatPage() {
         {/* Sidebar Header */}
         <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <MessageSquare className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <MessageCircle className="w-4 h-4 text-white" />
             </div>
-            <span className="font-bold">DEEPFRAME</span>
+            <span className="font-bold">Normal Chat</span>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -444,7 +362,7 @@ export default function DeepframeChatPage() {
         <div className="p-3">
           <button
             onClick={handleNewChat}
-            className="w-full flex items-center gap-2 px-4 py-3 rounded-xl bg-[var(--primary)] text-white hover:opacity-90 transition-opacity"
+            className="w-full flex items-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white hover:opacity-90 transition-opacity"
           >
             <Plus className="w-5 h-5" />
             New Chat
@@ -460,11 +378,11 @@ export default function DeepframeChatPage() {
               className={cn(
                 'group flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-colors',
                 activeChat?.id === chat.id
-                  ? 'bg-[var(--primary)]/20 text-[var(--primary)]'
+                  ? 'bg-emerald-500/20 text-emerald-400'
                   : 'hover:bg-[var(--secondary)]'
               )}
             >
-              <MessageSquare className="w-4 h-4 shrink-0" />
+              <MessageCircle className="w-4 h-4 shrink-0" />
               <span className="flex-1 truncate text-sm">{chat.title}</span>
               <button
                 onClick={(e) => handleDeleteChat(chat.id, e)}
@@ -477,7 +395,7 @@ export default function DeepframeChatPage() {
           ))}
         </div>
 
-        {/* Back to GemAI */}
+        {/* Back to Chats */}
         <div className="p-3 border-t border-[var(--border)]">
           <Link
             href="/chats"
@@ -495,7 +413,6 @@ export default function DeepframeChatPage() {
         <header className="sticky top-0 z-30 bg-[var(--background)]/80 backdrop-blur-xl border-b border-[var(--border)]">
           <div className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {/* Mobile menu button */}
               <button
                 onClick={() => setSidebarOpen(true)}
                 className="lg:hidden p-2 rounded-lg hover:bg-[var(--secondary)]"
@@ -508,75 +425,16 @@ export default function DeepframeChatPage() {
                   {activeChat?.title || 'New Chat'}
                 </h1>
                 <p className="text-[10px] text-[var(--muted-foreground)]">
-                  AI Prompt Assistant
+                  Gemini AI Chat
                 </p>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              {/* Upload Custom Prompt */}
-              <input
-                type="file"
-                accept=".txt"
-                ref={fileInputRef}
-                onChange={handlePromptUpload}
-                className="hidden"
-              />
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="p-2 rounded-lg hover:bg-[var(--secondary)] transition-colors"
-                title="Upload custom prompt file"
-              >
-                <Upload className="w-5 h-5" />
-              </button>
             </div>
           </div>
         </header>
 
-        {/* System Status */}
-        <div className="px-4 py-2">
-          <div
-            className={cn(
-              'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-              isPromptLoaded
-                ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-                : promptLoadError
-                ? 'bg-red-500/10 border border-red-500/30 text-red-400'
-                : 'bg-yellow-500/10 border border-yellow-500/30 text-yellow-400'
-            )}
-          >
-            {isPromptLoaded ? (
-              <>
-                <Bot className="w-4 h-4" />
-                <span>
-                  DEEPFRAME ready. Master prompt loaded ({promptLineCount.toLocaleString()} lines).
-                </span>
-              </>
-            ) : promptLoadError ? (
-              <>
-                <AlertCircle className="w-4 h-4" />
-                <span>Failed to load master prompt.</span>
-                <button
-                  onClick={retryLoadPrompt}
-                  className="ml-2 underline hover:no-underline"
-                >
-                  Retry
-                </button>
-                <span className="text-[var(--muted-foreground)]">or upload a .txt file</span>
-              </>
-            ) : (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Loading DEEPFRAME system...</span>
-              </>
-            )}
-          </div>
-        </div>
-
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto px-4 py-4">
           <div className="max-w-4xl mx-auto space-y-4">
-            {/* Chat Messages */}
             {activeChat?.messages.map((msg) => (
               <div
                 key={msg.id}
@@ -587,7 +445,7 @@ export default function DeepframeChatPage() {
               >
                 {/* Avatar for AI */}
                 {msg.role === 'model' && (
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                 )}
@@ -597,11 +455,10 @@ export default function DeepframeChatPage() {
                   className={cn(
                     'max-w-[85%] rounded-2xl relative group',
                     msg.role === 'user'
-                      ? 'bg-[var(--primary)] text-white rounded-tr-sm px-4 py-3'
+                      ? 'bg-emerald-600 text-white rounded-tr-sm px-4 py-3'
                       : 'bg-[var(--secondary)] rounded-tl-sm px-5 py-4'
                   )}
                 >
-                  {/* Message Text with Markdown rendering for AI messages */}
                   <div className="break-words prose prose-invert max-w-none">
                     {msg.role === 'model' ? (
                       <ReactMarkdown
@@ -614,7 +471,7 @@ export default function DeepframeChatPage() {
                           strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
                           em: ({ children }) => <em className="italic text-[var(--muted-foreground)]">{children}</em>,
                           code: ({ children }) => (
-                            <code className="bg-black/40 px-2 py-1 rounded text-sm font-mono text-purple-300">{children}</code>
+                            <code className="bg-black/40 px-2 py-1 rounded text-sm font-mono text-emerald-300">{children}</code>
                           ),
                           pre: ({ children }) => (
                             <pre className="bg-black/40 p-4 rounded-xl overflow-x-auto my-4 text-sm border border-white/10">{children}</pre>
@@ -623,7 +480,7 @@ export default function DeepframeChatPage() {
                           h2: ({ children }) => <h2 className="text-lg font-bold mb-3 mt-5 first:mt-0 text-white">{children}</h2>,
                           h3: ({ children }) => <h3 className="text-base font-semibold mb-2 mt-4 first:mt-0 text-white">{children}</h3>,
                           blockquote: ({ children }) => (
-                            <blockquote className="border-l-4 border-purple-500 pl-4 my-4 italic text-[var(--muted-foreground)]">{children}</blockquote>
+                            <blockquote className="border-l-4 border-emerald-500 pl-4 my-4 italic text-[var(--muted-foreground)]">{children}</blockquote>
                           ),
                           hr: () => <hr className="my-6 border-white/10" />,
                           table: ({ children }) => (
@@ -688,7 +545,7 @@ export default function DeepframeChatPage() {
 
                 {/* Avatar for User */}
                 {msg.role === 'user' && (
-                  <div className="w-8 h-8 rounded-lg bg-[var(--primary)] flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center shrink-0">
                     <User className="w-4 h-4 text-white" />
                   </div>
                 )}
@@ -698,7 +555,7 @@ export default function DeepframeChatPage() {
             {/* Loading Indicator */}
             {isLoading && (
               <div className="flex gap-3 justify-start">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4 text-white" />
                 </div>
                 <div className="bg-[var(--secondary)] rounded-2xl rounded-tl-sm px-4 py-3">
@@ -728,7 +585,6 @@ export default function DeepframeChatPage() {
               </div>
             )}
 
-            {/* Scroll anchor */}
             <div ref={messagesEndRef} />
           </div>
         </div>
@@ -763,7 +619,7 @@ export default function DeepframeChatPage() {
                 {attachments.length < 5 && (
                   <button
                     onClick={() => imageInputRef.current?.click()}
-                    className="w-20 h-20 rounded-lg border-2 border-dashed border-[var(--border)] flex items-center justify-center text-[var(--muted-foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-colors"
+                    className="w-20 h-20 rounded-lg border-2 border-dashed border-[var(--border)] flex items-center justify-center text-[var(--muted-foreground)] hover:border-emerald-500 hover:text-emerald-500 transition-colors"
                   >
                     <Plus className="w-6 h-6" />
                   </button>
@@ -787,7 +643,7 @@ export default function DeepframeChatPage() {
                 className={cn(
                   'p-3 rounded-xl transition-all shrink-0',
                   !isLoading && attachments.length < 5
-                    ? 'hover:bg-[var(--secondary)] text-[var(--muted-foreground)] hover:text-[var(--primary)]'
+                    ? 'hover:bg-[var(--secondary)] text-[var(--muted-foreground)] hover:text-emerald-500'
                     : 'opacity-50 cursor-not-allowed'
                 )}
                 title={attachments.length >= 5 ? 'Max 5 images' : 'Attach images'}
@@ -803,26 +659,24 @@ export default function DeepframeChatPage() {
                   onKeyDown={handleKeyDown}
                   onPaste={handlePaste}
                   placeholder={
-                    isPromptLoaded
-                      ? attachments.length > 0
-                        ? 'Add a message or send images...'
-                        : 'Type your message... (Ctrl+V to paste images)'
-                      : 'Loading DEEPFRAME system...'
+                    attachments.length > 0
+                      ? 'Add a message or send images...'
+                      : 'Type your message... (Ctrl+V to paste images)'
                   }
-                  disabled={!isPromptLoaded || isLoading}
+                  disabled={isLoading}
                   rows={1}
-                  className="w-full px-4 py-3 bg-[var(--secondary)] border border-[var(--border)] rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-4 py-3 bg-[var(--secondary)] border border-[var(--border)] rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ minHeight: '48px', maxHeight: '150px' }}
                 />
               </div>
 
               <button
                 onClick={handleSendMessage}
-                disabled={(!inputText.trim() && attachments.length === 0) || isLoading || !isPromptLoaded}
+                disabled={(!inputText.trim() && attachments.length === 0) || isLoading}
                 className={cn(
                   'p-3 rounded-xl transition-all shrink-0',
-                  (inputText.trim() || attachments.length > 0) && isPromptLoaded && !isLoading
-                    ? 'bg-[var(--primary)] text-white hover:opacity-90'
+                  (inputText.trim() || attachments.length > 0) && !isLoading
+                    ? 'bg-emerald-600 text-white hover:opacity-90'
                     : 'bg-[var(--secondary)] text-[var(--muted-foreground)] cursor-not-allowed'
                 )}
                 title="Send message"
@@ -838,7 +692,7 @@ export default function DeepframeChatPage() {
             {/* API Key Warning */}
             {!hasKeys && (
               <p className="text-xs text-[var(--muted-foreground)] mt-2 text-center">
-                <Link href="/" className="text-[var(--primary)] hover:underline">
+                <Link href="/" className="text-emerald-500 hover:underline">
                   Add an API key
                 </Link>{' '}
                 to start chatting

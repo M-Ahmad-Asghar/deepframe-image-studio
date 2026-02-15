@@ -133,15 +133,15 @@ export function ImageGenerator() {
               </span>
             )}
 
-            {/* DEEPFRAME Chat Link */}
+            {/* Chats Link */}
             <Link
-              href="/deepframe-chat"
+              href="/chats"
               className="btn btn-icon hover:bg-[var(--secondary)] relative group"
-              title="DEEPFRAME Chat"
+              title="Chats"
             >
               <MessageSquare className="w-5 h-5" />
               <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] bg-[var(--secondary)] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                AI Chat
+                Chats
               </span>
             </Link>
 
